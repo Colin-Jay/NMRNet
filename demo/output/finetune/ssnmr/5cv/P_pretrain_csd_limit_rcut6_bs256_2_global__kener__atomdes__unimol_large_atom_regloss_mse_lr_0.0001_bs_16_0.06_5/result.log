@@ -1,0 +1,15 @@
+fused_multi_tensor is not installed corrected
+fused_layer_norm is not installed corrected
+fused_softmax is not installed corrected
+metric of ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/cv_seed_42_fold_0_valid.out.pkl
+: R2: 0.7740, MAE: 15.9395, MSE: 800.3305, RMSE: 28.2901
+metric of ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/cv_seed_42_fold_1_valid.out.pkl
+: R2: 0.7415, MAE: 16.3479, MSE: 915.3215, RMSE: 30.2543
+metric of ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/cv_seed_42_fold_3_valid.out.pkl
+: R2: 0.8143, MAE: 14.5264, MSE: 657.7577, RMSE: 25.6468
+metric of ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/cv_seed_42_fold_2_valid.out.pkl
+: R2: 0.7945, MAE: 15.1289, MSE: 727.7422, RMSE: 26.9767
+metric of ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/cv_seed_42_fold_4_valid.out.pkl
+: R2: 0.7870, MAE: 14.9568, MSE: 754.0823, RMSE: 27.4606
+metric of mean
+: R2: 0.7931, MAE: 14.8342, MSE: 732.6251, RMSE: 27.0670

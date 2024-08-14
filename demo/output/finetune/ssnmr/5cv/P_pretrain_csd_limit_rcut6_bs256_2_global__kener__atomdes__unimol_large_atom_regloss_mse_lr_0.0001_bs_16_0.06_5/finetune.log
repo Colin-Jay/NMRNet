@@ -1,0 +1,1525 @@
+fused_multi_tensor is not installed corrected
+fused_layer_norm is not installed corrected
+fused_softmax is not installed corrected
+2024-08-13 17:06:49 | INFO | unicore.distributed.utils | distributed init (rank 0): env://
+2024-08-13 17:06:49 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 0
+2024-08-13 17:06:49 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 1 nodes.
+2024-08-13 17:06:49 | INFO | unicore.distributed.utils | initialized host di-20240813215254-lqdsd as rank 0
+2024-08-13 17:06:51 | INFO | unicore_cli.train | Namespace(activation_dropout=0.0, activation_fn='gelu', adam_betas='(0.9, 0.99)', adam_eps=1e-06, all_gather_list_size=16384, allreduce_fp32_grad=False, arch='unimol_large', atom_descriptor=0, attention_dropout=0.1, batch_size=16, batch_size_valid=16, best_checkpoint_metric='valid_rmse', bf16=False, bf16_sr=False, broadcast_buffers=False, bucket_cap_mb=25, checkpoint_suffix='', classification_head_name='nmr_head', clip_norm=1.0, conf_size=10, conformer_augmentation=False, cpu=False, curriculum=0, cv_seed=42, data='./demo/data/finetune/ssnmr', data_buffer_size=10, ddp_backend='c10d', delta_pair_repr_norm_loss=-1.0, device_id=0, dict_name='dict.txt', disable_validation=False, distributed_backend='nccl', distributed_init_method='env://', distributed_no_spawn=True, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.1, ema_decay=-1.0, emb_dropout=0.1, empty_cache_freq=0, encoder_attention_heads=64, encoder_embed_dim=512, encoder_ffn_embed_dim=2048, encoder_layers=15, end_learning_rate=0.0, fast_stat_sync=False, find_unused_parameters=False, finetune_from_model='/vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt', fix_batches_to_gpus=False, fixed_validation_seed=None, fold=0, force_anneal=None, fp16=True, fp16_init_scale=4, fp16_no_flatten_grads=False, fp16_scale_tolerance=0.0, fp16_scale_window=256, gaussian_kernel=True, global_distance=False, has_matid=False, keep_best_checkpoints=-1, keep_interval_updates=-1, keep_last_epochs=1, lattice_loss=-1.0, load_from_ema=False, log_format='simple', log_interval=1000, loss='atom_regloss_mse', lr=[0.0001], lr_scheduler='polynomial_decay', masked_coord_loss=-1.0, masked_dist_loss=-1.0, masked_token_loss=-1.0, max_atoms=512, max_epoch=5, max_seq_len=1024, max_update=0, max_valid_steps=None, maximize_best_checkpoint_metric=False, min_loss_scale=0.0001, nfolds=5, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_seed_provided=False, nprocs_per_node=1, num_classes=1, num_workers=8, optimizer='adam', optimizer_overrides='{}', patience=-1, per_sample_clip_norm=0, pooler_activation_fn='tanh', pooler_dropout=0.0, post_ln=False, power=1.0, profile=False, remove_hydrogen=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0', save_interval=1, save_interval_updates=0, saved_dir=None, seed=1, selected_atom='P', skip_invalid_size_inputs_valid_test=False, split_mode='cross_valid', stop_min_lr=-1, stop_time_hours=0, suppress_crashes=False, task='uninmr', tensorboard_logdir='', threshold_loss_scale=None, tmp_save_dir='./', total_num_update=1000000, train_subset='train', update_freq=[1], user_dir='./uninmr', valid_subset='valid', validate_after_updates=0, validate_interval=1, validate_interval_updates=0, validate_with_ema=False, warmup_ratio=0.06, warmup_updates=0, weight_decay=0.0, x_norm_loss=-1.0)
+2024-08-13 17:06:51 | INFO | uninmr.tasks.uninmr | dictionary: 30 types
+2024-08-13 17:06:51 | INFO | unicore_cli.train | UniMatModel(
+  (embed_tokens): Embedding(31, 512, padding_idx=0)
+  (encoder): TransformerEncoderWithPair(
+    (emb_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (5): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (6): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (7): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (8): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (9): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (10): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (11): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (12): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (13): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (14): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (gbf_proj): NonLinearHead(
+    (linear1): Linear(in_features=128, out_features=128, bias=True)
+    (linear2): Linear(in_features=128, out_features=64, bias=True)
+  )
+  (gbf): GaussianLayer(
+    (means): Embedding(1, 128)
+    (stds): Embedding(1, 128)
+    (mul): Embedding(961, 1)
+    (bias): Embedding(961, 1)
+  )
+  (classification_heads): ModuleDict()
+  (node_classification_heads): ModuleDict(
+    (nmr_head): NodeClassificationHead(
+      (dense): Linear(in_features=512, out_features=512, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (out_proj): Linear(in_features=512, out_features=1, bias=True)
+    )
+  )
+)
+2024-08-13 17:06:51 | INFO | unicore_cli.train | task: UniNMRTask
+2024-08-13 17:06:51 | INFO | unicore_cli.train | model: UniMatModel
+2024-08-13 17:06:51 | INFO | unicore_cli.train | loss: AtomRegMSELoss
+2024-08-13 17:06:51 | INFO | unicore_cli.train | num. model params: 47,593,795 (num. trained: 47,593,795)
+2024-08-13 17:06:51 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:06:51 | INFO | unicore.utils | rank   0: capabilities =  8.9  ; total memory = 23.650 GB ; name = NVIDIA GeForce RTX 4090 D               
+2024-08-13 17:06:51 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:06:51 | INFO | unicore_cli.train | training on 1 devices (GPUs)
+2024-08-13 17:06:51 | INFO | unicore_cli.train | batch size per device = 16
+2024-08-13 17:06:51 | INFO | unicore.checkpoint_utils | loading pretrained model from /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt: optimizer, lr scheduler, meters, dataloader will be reset
+2024-08-13 17:06:51 | INFO | unicore.trainer | Preparing to load checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt
+2024-08-13 17:07:03 | WARNING | unicore.trainer | Error in loading model state, missing_keys ['node_classification_heads.nmr_head.dense.weight', 'node_classification_heads.nmr_head.dense.bias', 'node_classification_heads.nmr_head.out_proj.weight', 'node_classification_heads.nmr_head.out_proj.bias']
+2024-08-13 17:07:03 | WARNING | unicore.trainer | Error in loading model state, unexpected_keys ['lm_head.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'pair2coord_proj.linear1.weight', 'pair2coord_proj.linear1.bias', 'pair2coord_proj.linear2.weight', 'pair2coord_proj.linear2.bias', 'dist_head.dense.weight', 'dist_head.dense.bias', 'dist_head.layer_norm.weight', 'dist_head.layer_norm.bias', 'dist_head.out_proj.weight', 'dist_head.out_proj.bias', 'encoder.final_head_layer_norm.weight', 'encoder.final_head_layer_norm.bias']
+2024-08-13 17:07:03 | INFO | unicore.trainer | Loaded checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt (epoch 2 @ 0 updates)
+2024-08-13 17:07:03 | INFO | unicore.trainer | loading train data for epoch 1
+2024-08-13 17:07:04 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:07:04 | INFO | unicore.optim.adam | using FusedAdam
+2024-08-13 17:07:04 | INFO | unicore.trainer | begin training epoch 1
+2024-08-13 17:07:04 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:07:14 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:07:14 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:07:15 | INFO | valid | epoch 001 | valid on 'valid' subset | loss 0.013 | valid_r2 0.793 | valid_mae 19.8071 | valid_mse 975.449 | valid_rmse 31.2322 | bsz 1057 | num_updates 265
+2024-08-13 17:07:15 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 1 @ 265 updates
+2024-08-13 17:07:15 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:07:16 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:07:16 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint1.pt (epoch 1 @ 265 updates, score 31.2322) (writing took 0.9595178938470781 seconds)
+2024-08-13 17:07:16 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint1.pt
+2024-08-13 17:07:16 | INFO | unicore_cli.train | end of epoch 1 (average epoch stats below)
+2024-08-13 17:07:16 | INFO | train | epoch 001 | loss 0.026 | ups 25.74 | bsz 16 | num_updates 265 | lr 8.51319e-05 | gnorm 1.556 | clip 70.6 | loss_scale 8 | train_wall 9.25 | gb_free 20.8 | wall 25
+2024-08-13 17:07:16 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 2
+2024-08-13 17:07:16 | INFO | unicore.trainer | begin training epoch 2
+2024-08-13 17:07:16 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:07:18 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_best.pt
+2024-08-13 17:07:18 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_last.pt
+2024-08-13 17:07:19 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint1.pt ...
+2024-08-13 17:07:19 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:07:25 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:07:25 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:07:27 | INFO | valid | epoch 002 | valid on 'valid' subset | loss 0.009 | valid_r2 0.8659 | valid_mae 15.3648 | valid_mse 631.775 | valid_rmse 25.1351 | bsz 1057 | num_updates 530 | best_valid_rmse 25.1351
+2024-08-13 17:07:27 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 2 @ 530 updates
+2024-08-13 17:07:27 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:07:27 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:07:27 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint2.pt (epoch 2 @ 530 updates, score 25.1351) (writing took 0.8458126340992749 seconds)
+2024-08-13 17:07:27 | INFO | unicore_cli.train | end of epoch 2 (average epoch stats below)
+2024-08-13 17:07:27 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint2.pt
+2024-08-13 17:07:27 | INFO | train | epoch 002 | loss 0.01 | ups 24.08 | bsz 16 | num_updates 530 | lr 6.39488e-05 | gnorm 1.204 | clip 51.3 | loss_scale 16 | train_wall 7.74 | gb_free 20.8 | wall 36
+2024-08-13 17:07:27 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 3
+2024-08-13 17:07:27 | INFO | unicore.trainer | begin training epoch 3
+2024-08-13 17:07:27 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:07:29 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_best.pt
+2024-08-13 17:07:29 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_last.pt
+2024-08-13 17:07:30 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint2.pt ...
+2024-08-13 17:07:30 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint1.pt
+2024-08-13 17:07:30 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:07:37 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:07:37 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:07:38 | INFO | valid | epoch 003 | valid on 'valid' subset | loss 0.006 | valid_r2 0.9073 | valid_mae 13.0374 | valid_mse 436.522 | valid_rmse 20.8931 | bsz 1057 | num_updates 795 | best_valid_rmse 20.8931
+2024-08-13 17:07:38 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 3 @ 795 updates
+2024-08-13 17:07:38 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:07:39 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:07:39 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint3.pt (epoch 3 @ 795 updates, score 20.8931) (writing took 0.8754006689414382 seconds)
+2024-08-13 17:07:39 | INFO | unicore_cli.train | end of epoch 3 (average epoch stats below)
+2024-08-13 17:07:39 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint3.pt
+2024-08-13 17:07:39 | INFO | train | epoch 003 | loss 0.006 | ups 23.63 | bsz 16 | num_updates 795 | lr 4.27658e-05 | gnorm 1.001 | clip 37 | loss_scale 32 | train_wall 8.16 | gb_free 21.1 | wall 47
+2024-08-13 17:07:39 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 4
+2024-08-13 17:07:39 | INFO | unicore.trainer | begin training epoch 4
+2024-08-13 17:07:39 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:07:40 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_best.pt
+2024-08-13 17:07:41 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_last.pt
+2024-08-13 17:07:41 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint3.pt ...
+2024-08-13 17:07:41 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint2.pt
+2024-08-13 17:07:41 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:07:46 | INFO | train_inner | epoch 004:    205 / 265 loss=0.012, ups=24.74, bsz=16, num_updates=1000, lr=2.63789e-05, gnorm=1.162, clip=46.5, loss_scale=32, train_wall=31.88, gb_free=20.8, wall=55
+2024-08-13 17:07:48 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:07:48 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:07:49 | INFO | valid | epoch 004 | valid on 'valid' subset | loss 0.004 | valid_r2 0.9313 | valid_mae 11.2581 | valid_mse 323.832 | valid_rmse 17.9953 | bsz 1057 | num_updates 1060 | best_valid_rmse 17.9953
+2024-08-13 17:07:49 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 4 @ 1060 updates
+2024-08-13 17:07:49 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:07:50 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:07:50 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint4.pt (epoch 4 @ 1060 updates, score 17.9953) (writing took 0.8814688720740378 seconds)
+2024-08-13 17:07:50 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint4.pt
+2024-08-13 17:07:50 | INFO | unicore_cli.train | end of epoch 4 (average epoch stats below)
+2024-08-13 17:07:50 | INFO | train | epoch 004 | loss 0.003 | ups 22.57 | bsz 16 | num_updates 1060 | lr 2.15827e-05 | gnorm 0.877 | clip 20.4 | loss_scale 64 | train_wall 8.5 | gb_free 20.8 | wall 59
+2024-08-13 17:07:50 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 5
+2024-08-13 17:07:50 | INFO | unicore.trainer | begin training epoch 5
+2024-08-13 17:07:50 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:07:52 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_best.pt
+2024-08-13 17:07:52 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_last.pt
+2024-08-13 17:07:53 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint4.pt ...
+2024-08-13 17:07:53 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint3.pt
+2024-08-13 17:07:53 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:07:59 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:07:59 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:08:00 | INFO | valid | epoch 005 | valid on 'valid' subset | loss 0.004 | valid_r2 0.9434 | valid_mae 10.1515 | valid_mse 266.584 | valid_rmse 16.3274 | bsz 1057 | num_updates 1325 | best_valid_rmse 16.3274
+2024-08-13 17:08:00 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 5 @ 1325 updates
+2024-08-13 17:08:00 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:08:01 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:08:01 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint5.pt (epoch 5 @ 1325 updates, score 16.3274) (writing took 0.8373504541814327 seconds)
+2024-08-13 17:08:01 | INFO | unicore_cli.train | end of epoch 5 (average epoch stats below)
+2024-08-13 17:08:01 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint5.pt
+2024-08-13 17:08:01 | INFO | train | epoch 005 | loss 0.002 | ups 24.42 | bsz 16 | num_updates 1325 | lr 3.9968e-07 | gnorm 0.686 | clip 10.6 | loss_scale 128 | train_wall 7.78 | gb_free 20.8 | wall 70
+2024-08-13 17:08:01 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 6
+2024-08-13 17:08:02 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_best.pt
+2024-08-13 17:08:03 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint_last.pt
+2024-08-13 17:08:04 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint5.pt ...
+2024-08-13 17:08:04 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_0/checkpoint4.pt
+2024-08-13 17:08:04 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:08:04 | INFO | unicore_cli.train | done training in 57.6 seconds
+2024-08-13 17:08:04 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:2 to store for rank: 0
+2024-08-13 17:08:04 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:2 with 1 nodes.
+/root/miniconda3/envs/nmrnet/lib/python3.8/site-packages/torch/distributed/launch.py:180: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torchrun.
+Note that --use_env is set by default in torchrun.
+If your script expects `--local_rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(
+fused_multi_tensor is not installed corrected
+fused_layer_norm is not installed corrected
+fused_softmax is not installed corrected
+2024-08-13 17:08:10 | INFO | unicore.distributed.utils | distributed init (rank 0): env://
+2024-08-13 17:08:10 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 0
+2024-08-13 17:08:10 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 1 nodes.
+2024-08-13 17:08:10 | INFO | unicore.distributed.utils | initialized host di-20240813215254-lqdsd as rank 0
+2024-08-13 17:08:12 | INFO | unicore_cli.train | Namespace(activation_dropout=0.0, activation_fn='gelu', adam_betas='(0.9, 0.99)', adam_eps=1e-06, all_gather_list_size=16384, allreduce_fp32_grad=False, arch='unimol_large', atom_descriptor=0, attention_dropout=0.1, batch_size=16, batch_size_valid=16, best_checkpoint_metric='valid_rmse', bf16=False, bf16_sr=False, broadcast_buffers=False, bucket_cap_mb=25, checkpoint_suffix='', classification_head_name='nmr_head', clip_norm=1.0, conf_size=10, conformer_augmentation=False, cpu=False, curriculum=0, cv_seed=42, data='./demo/data/finetune/ssnmr', data_buffer_size=10, ddp_backend='c10d', delta_pair_repr_norm_loss=-1.0, device_id=0, dict_name='dict.txt', disable_validation=False, distributed_backend='nccl', distributed_init_method='env://', distributed_no_spawn=True, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.1, ema_decay=-1.0, emb_dropout=0.1, empty_cache_freq=0, encoder_attention_heads=64, encoder_embed_dim=512, encoder_ffn_embed_dim=2048, encoder_layers=15, end_learning_rate=0.0, fast_stat_sync=False, find_unused_parameters=False, finetune_from_model='/vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt', fix_batches_to_gpus=False, fixed_validation_seed=None, fold=1, force_anneal=None, fp16=True, fp16_init_scale=4, fp16_no_flatten_grads=False, fp16_scale_tolerance=0.0, fp16_scale_window=256, gaussian_kernel=True, global_distance=False, has_matid=False, keep_best_checkpoints=-1, keep_interval_updates=-1, keep_last_epochs=1, lattice_loss=-1.0, load_from_ema=False, log_format='simple', log_interval=1000, loss='atom_regloss_mse', lr=[0.0001], lr_scheduler='polynomial_decay', masked_coord_loss=-1.0, masked_dist_loss=-1.0, masked_token_loss=-1.0, max_atoms=512, max_epoch=5, max_seq_len=1024, max_update=0, max_valid_steps=None, maximize_best_checkpoint_metric=False, min_loss_scale=0.0001, nfolds=5, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_seed_provided=False, nprocs_per_node=1, num_classes=1, num_workers=8, optimizer='adam', optimizer_overrides='{}', patience=-1, per_sample_clip_norm=0, pooler_activation_fn='tanh', pooler_dropout=0.0, post_ln=False, power=1.0, profile=False, remove_hydrogen=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1', save_interval=1, save_interval_updates=0, saved_dir=None, seed=1, selected_atom='P', skip_invalid_size_inputs_valid_test=False, split_mode='cross_valid', stop_min_lr=-1, stop_time_hours=0, suppress_crashes=False, task='uninmr', tensorboard_logdir='', threshold_loss_scale=None, tmp_save_dir='./', total_num_update=1000000, train_subset='train', update_freq=[1], user_dir='./uninmr', valid_subset='valid', validate_after_updates=0, validate_interval=1, validate_interval_updates=0, validate_with_ema=False, warmup_ratio=0.06, warmup_updates=0, weight_decay=0.0, x_norm_loss=-1.0)
+2024-08-13 17:08:12 | INFO | uninmr.tasks.uninmr | dictionary: 30 types
+2024-08-13 17:08:12 | INFO | unicore_cli.train | UniMatModel(
+  (embed_tokens): Embedding(31, 512, padding_idx=0)
+  (encoder): TransformerEncoderWithPair(
+    (emb_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (5): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (6): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (7): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (8): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (9): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (10): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (11): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (12): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (13): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (14): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (gbf_proj): NonLinearHead(
+    (linear1): Linear(in_features=128, out_features=128, bias=True)
+    (linear2): Linear(in_features=128, out_features=64, bias=True)
+  )
+  (gbf): GaussianLayer(
+    (means): Embedding(1, 128)
+    (stds): Embedding(1, 128)
+    (mul): Embedding(961, 1)
+    (bias): Embedding(961, 1)
+  )
+  (classification_heads): ModuleDict()
+  (node_classification_heads): ModuleDict(
+    (nmr_head): NodeClassificationHead(
+      (dense): Linear(in_features=512, out_features=512, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (out_proj): Linear(in_features=512, out_features=1, bias=True)
+    )
+  )
+)
+2024-08-13 17:08:12 | INFO | unicore_cli.train | task: UniNMRTask
+2024-08-13 17:08:12 | INFO | unicore_cli.train | model: UniMatModel
+2024-08-13 17:08:12 | INFO | unicore_cli.train | loss: AtomRegMSELoss
+2024-08-13 17:08:12 | INFO | unicore_cli.train | num. model params: 47,593,795 (num. trained: 47,593,795)
+2024-08-13 17:08:12 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:08:12 | INFO | unicore.utils | rank   0: capabilities =  8.9  ; total memory = 23.650 GB ; name = NVIDIA GeForce RTX 4090 D               
+2024-08-13 17:08:12 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:08:12 | INFO | unicore_cli.train | training on 1 devices (GPUs)
+2024-08-13 17:08:12 | INFO | unicore_cli.train | batch size per device = 16
+2024-08-13 17:08:12 | INFO | unicore.checkpoint_utils | loading pretrained model from /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt: optimizer, lr scheduler, meters, dataloader will be reset
+2024-08-13 17:08:12 | INFO | unicore.trainer | Preparing to load checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt
+2024-08-13 17:08:24 | WARNING | unicore.trainer | Error in loading model state, missing_keys ['node_classification_heads.nmr_head.dense.weight', 'node_classification_heads.nmr_head.dense.bias', 'node_classification_heads.nmr_head.out_proj.weight', 'node_classification_heads.nmr_head.out_proj.bias']
+2024-08-13 17:08:24 | WARNING | unicore.trainer | Error in loading model state, unexpected_keys ['lm_head.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'pair2coord_proj.linear1.weight', 'pair2coord_proj.linear1.bias', 'pair2coord_proj.linear2.weight', 'pair2coord_proj.linear2.bias', 'dist_head.dense.weight', 'dist_head.dense.bias', 'dist_head.layer_norm.weight', 'dist_head.layer_norm.bias', 'dist_head.out_proj.weight', 'dist_head.out_proj.bias', 'encoder.final_head_layer_norm.weight', 'encoder.final_head_layer_norm.bias']
+2024-08-13 17:08:24 | INFO | unicore.trainer | Loaded checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt (epoch 2 @ 0 updates)
+2024-08-13 17:08:25 | INFO | unicore.trainer | loading train data for epoch 1
+2024-08-13 17:08:25 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:08:25 | INFO | unicore.optim.adam | using FusedAdam
+2024-08-13 17:08:25 | INFO | unicore.trainer | begin training epoch 1
+2024-08-13 17:08:25 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:08:36 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:08:36 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:08:37 | INFO | valid | epoch 001 | valid on 'valid' subset | loss 0.011 | valid_r2 0.8239 | valid_mae 16.6614 | valid_mse 786.376 | valid_rmse 28.0424 | bsz 1057 | num_updates 265
+2024-08-13 17:08:37 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 1 @ 265 updates
+2024-08-13 17:08:37 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:08:38 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:08:38 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint1.pt (epoch 1 @ 265 updates, score 28.0424) (writing took 0.8867835788987577 seconds)
+2024-08-13 17:08:38 | INFO | unicore_cli.train | end of epoch 1 (average epoch stats below)
+2024-08-13 17:08:38 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint1.pt
+2024-08-13 17:08:38 | INFO | train | epoch 001 | loss 0.026 | ups 24.65 | bsz 16 | num_updates 265 | lr 8.51319e-05 | gnorm 1.674 | clip 75.5 | loss_scale 8 | train_wall 9.47 | gb_free 20.8 | wall 26
+2024-08-13 17:08:38 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 2
+2024-08-13 17:08:38 | INFO | unicore.trainer | begin training epoch 2
+2024-08-13 17:08:38 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:08:39 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_best.pt
+2024-08-13 17:08:40 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_last.pt
+2024-08-13 17:08:41 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint1.pt ...
+2024-08-13 17:08:41 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:08:47 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:08:47 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:08:48 | INFO | valid | epoch 002 | valid on 'valid' subset | loss 0.009 | valid_r2 0.8592 | valid_mae 15.4595 | valid_mse 628.912 | valid_rmse 25.0781 | bsz 1057 | num_updates 530 | best_valid_rmse 25.0781
+2024-08-13 17:08:48 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 2 @ 530 updates
+2024-08-13 17:08:48 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:08:49 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:08:49 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint2.pt (epoch 2 @ 530 updates, score 25.0781) (writing took 0.8546206490136683 seconds)
+2024-08-13 17:08:49 | INFO | unicore_cli.train | end of epoch 2 (average epoch stats below)
+2024-08-13 17:08:49 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint2.pt
+2024-08-13 17:08:49 | INFO | train | epoch 002 | loss 0.01 | ups 23.46 | bsz 16 | num_updates 530 | lr 6.39488e-05 | gnorm 1.26 | clip 63.4 | loss_scale 16 | train_wall 8.07 | gb_free 20.8 | wall 37
+2024-08-13 17:08:49 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 3
+2024-08-13 17:08:49 | INFO | unicore.trainer | begin training epoch 3
+2024-08-13 17:08:49 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:08:50 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_best.pt
+2024-08-13 17:08:51 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_last.pt
+2024-08-13 17:08:52 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint2.pt ...
+2024-08-13 17:08:52 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint1.pt
+2024-08-13 17:08:52 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:08:59 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:08:59 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:09:00 | INFO | valid | epoch 003 | valid on 'valid' subset | loss 0.004 | valid_r2 0.9329 | valid_mae 11.3569 | valid_mse 299.859 | valid_rmse 17.3164 | bsz 1057 | num_updates 795 | best_valid_rmse 17.3164
+2024-08-13 17:09:00 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 3 @ 795 updates
+2024-08-13 17:09:00 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:09:01 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:09:01 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint3.pt (epoch 3 @ 795 updates, score 17.3164) (writing took 0.8062351690605283 seconds)
+2024-08-13 17:09:01 | INFO | unicore_cli.train | end of epoch 3 (average epoch stats below)
+2024-08-13 17:09:01 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint3.pt
+2024-08-13 17:09:01 | INFO | train | epoch 003 | loss 0.006 | ups 23.1 | bsz 16 | num_updates 795 | lr 4.27658e-05 | gnorm 1.096 | clip 40 | loss_scale 32 | train_wall 8.21 | gb_free 20.8 | wall 48
+2024-08-13 17:09:01 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 4
+2024-08-13 17:09:01 | INFO | unicore.trainer | begin training epoch 4
+2024-08-13 17:09:01 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:09:02 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_best.pt
+2024-08-13 17:09:03 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_last.pt
+2024-08-13 17:09:03 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint3.pt ...
+2024-08-13 17:09:03 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint2.pt
+2024-08-13 17:09:03 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:09:08 | INFO | train_inner | epoch 004:    205 / 265 loss=0.012, ups=24.34, bsz=16, num_updates=1000, lr=2.63789e-05, gnorm=1.231, clip=52.4, loss_scale=32, train_wall=32.24, gb_free=20.8, wall=56
+2024-08-13 17:09:10 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:09:10 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:09:11 | INFO | valid | epoch 004 | valid on 'valid' subset | loss 0.004 | valid_r2 0.9369 | valid_mae 11.0615 | valid_mse 281.938 | valid_rmse 16.791 | bsz 1057 | num_updates 1060 | best_valid_rmse 16.791
+2024-08-13 17:09:11 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 4 @ 1060 updates
+2024-08-13 17:09:11 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:09:12 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:09:12 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint4.pt (epoch 4 @ 1060 updates, score 16.791) (writing took 0.7720733629539609 seconds)
+2024-08-13 17:09:12 | INFO | unicore_cli.train | end of epoch 4 (average epoch stats below)
+2024-08-13 17:09:12 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint4.pt
+2024-08-13 17:09:12 | INFO | train | epoch 004 | loss 0.003 | ups 23.35 | bsz 16 | num_updates 1060 | lr 2.15827e-05 | gnorm 0.825 | clip 24.5 | loss_scale 64 | train_wall 8.36 | gb_free 20.8 | wall 60
+2024-08-13 17:09:12 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 5
+2024-08-13 17:09:12 | INFO | unicore.trainer | begin training epoch 5
+2024-08-13 17:09:12 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:09:13 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_best.pt
+2024-08-13 17:09:14 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_last.pt
+2024-08-13 17:09:15 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint4.pt ...
+2024-08-13 17:09:15 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint3.pt
+2024-08-13 17:09:15 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:09:21 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:09:21 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:09:23 | INFO | valid | epoch 005 | valid on 'valid' subset | loss 0.003 | valid_r2 0.9507 | valid_mae 9.9426 | valid_mse 220.066 | valid_rmse 14.8346 | bsz 1057 | num_updates 1325 | best_valid_rmse 14.8346
+2024-08-13 17:09:23 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 5 @ 1325 updates
+2024-08-13 17:09:23 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:09:23 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:09:23 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint5.pt (epoch 5 @ 1325 updates, score 14.8346) (writing took 0.802282202988863 seconds)
+2024-08-13 17:09:23 | INFO | unicore_cli.train | end of epoch 5 (average epoch stats below)
+2024-08-13 17:09:23 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint5.pt
+2024-08-13 17:09:23 | INFO | train | epoch 005 | loss 0.002 | ups 23.22 | bsz 16 | num_updates 1325 | lr 3.9968e-07 | gnorm 0.695 | clip 14 | loss_scale 128 | train_wall 8.25 | gb_free 20.8 | wall 71
+2024-08-13 17:09:23 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 6
+2024-08-13 17:09:25 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_best.pt
+2024-08-13 17:09:25 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint_last.pt
+2024-08-13 17:09:26 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint5.pt ...
+2024-08-13 17:09:26 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_1/checkpoint4.pt
+2024-08-13 17:09:26 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:09:26 | INFO | unicore_cli.train | done training in 58.5 seconds
+2024-08-13 17:09:26 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:2 to store for rank: 0
+2024-08-13 17:09:26 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:2 with 1 nodes.
+/root/miniconda3/envs/nmrnet/lib/python3.8/site-packages/torch/distributed/launch.py:180: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torchrun.
+Note that --use_env is set by default in torchrun.
+If your script expects `--local_rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(
+fused_multi_tensor is not installed corrected
+fused_layer_norm is not installed corrected
+fused_softmax is not installed corrected
+2024-08-13 17:09:33 | INFO | unicore.distributed.utils | distributed init (rank 0): env://
+2024-08-13 17:09:33 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 0
+2024-08-13 17:09:33 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 1 nodes.
+2024-08-13 17:09:33 | INFO | unicore.distributed.utils | initialized host di-20240813215254-lqdsd as rank 0
+2024-08-13 17:09:35 | INFO | unicore_cli.train | Namespace(activation_dropout=0.0, activation_fn='gelu', adam_betas='(0.9, 0.99)', adam_eps=1e-06, all_gather_list_size=16384, allreduce_fp32_grad=False, arch='unimol_large', atom_descriptor=0, attention_dropout=0.1, batch_size=16, batch_size_valid=16, best_checkpoint_metric='valid_rmse', bf16=False, bf16_sr=False, broadcast_buffers=False, bucket_cap_mb=25, checkpoint_suffix='', classification_head_name='nmr_head', clip_norm=1.0, conf_size=10, conformer_augmentation=False, cpu=False, curriculum=0, cv_seed=42, data='./demo/data/finetune/ssnmr', data_buffer_size=10, ddp_backend='c10d', delta_pair_repr_norm_loss=-1.0, device_id=0, dict_name='dict.txt', disable_validation=False, distributed_backend='nccl', distributed_init_method='env://', distributed_no_spawn=True, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.1, ema_decay=-1.0, emb_dropout=0.1, empty_cache_freq=0, encoder_attention_heads=64, encoder_embed_dim=512, encoder_ffn_embed_dim=2048, encoder_layers=15, end_learning_rate=0.0, fast_stat_sync=False, find_unused_parameters=False, finetune_from_model='/vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt', fix_batches_to_gpus=False, fixed_validation_seed=None, fold=2, force_anneal=None, fp16=True, fp16_init_scale=4, fp16_no_flatten_grads=False, fp16_scale_tolerance=0.0, fp16_scale_window=256, gaussian_kernel=True, global_distance=False, has_matid=False, keep_best_checkpoints=-1, keep_interval_updates=-1, keep_last_epochs=1, lattice_loss=-1.0, load_from_ema=False, log_format='simple', log_interval=1000, loss='atom_regloss_mse', lr=[0.0001], lr_scheduler='polynomial_decay', masked_coord_loss=-1.0, masked_dist_loss=-1.0, masked_token_loss=-1.0, max_atoms=512, max_epoch=5, max_seq_len=1024, max_update=0, max_valid_steps=None, maximize_best_checkpoint_metric=False, min_loss_scale=0.0001, nfolds=5, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_seed_provided=False, nprocs_per_node=1, num_classes=1, num_workers=8, optimizer='adam', optimizer_overrides='{}', patience=-1, per_sample_clip_norm=0, pooler_activation_fn='tanh', pooler_dropout=0.0, post_ln=False, power=1.0, profile=False, remove_hydrogen=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2', save_interval=1, save_interval_updates=0, saved_dir=None, seed=1, selected_atom='P', skip_invalid_size_inputs_valid_test=False, split_mode='cross_valid', stop_min_lr=-1, stop_time_hours=0, suppress_crashes=False, task='uninmr', tensorboard_logdir='', threshold_loss_scale=None, tmp_save_dir='./', total_num_update=1000000, train_subset='train', update_freq=[1], user_dir='./uninmr', valid_subset='valid', validate_after_updates=0, validate_interval=1, validate_interval_updates=0, validate_with_ema=False, warmup_ratio=0.06, warmup_updates=0, weight_decay=0.0, x_norm_loss=-1.0)
+2024-08-13 17:09:35 | INFO | uninmr.tasks.uninmr | dictionary: 30 types
+2024-08-13 17:09:35 | INFO | unicore_cli.train | UniMatModel(
+  (embed_tokens): Embedding(31, 512, padding_idx=0)
+  (encoder): TransformerEncoderWithPair(
+    (emb_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (5): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (6): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (7): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (8): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (9): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (10): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (11): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (12): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (13): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (14): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (gbf_proj): NonLinearHead(
+    (linear1): Linear(in_features=128, out_features=128, bias=True)
+    (linear2): Linear(in_features=128, out_features=64, bias=True)
+  )
+  (gbf): GaussianLayer(
+    (means): Embedding(1, 128)
+    (stds): Embedding(1, 128)
+    (mul): Embedding(961, 1)
+    (bias): Embedding(961, 1)
+  )
+  (classification_heads): ModuleDict()
+  (node_classification_heads): ModuleDict(
+    (nmr_head): NodeClassificationHead(
+      (dense): Linear(in_features=512, out_features=512, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (out_proj): Linear(in_features=512, out_features=1, bias=True)
+    )
+  )
+)
+2024-08-13 17:09:35 | INFO | unicore_cli.train | task: UniNMRTask
+2024-08-13 17:09:35 | INFO | unicore_cli.train | model: UniMatModel
+2024-08-13 17:09:35 | INFO | unicore_cli.train | loss: AtomRegMSELoss
+2024-08-13 17:09:35 | INFO | unicore_cli.train | num. model params: 47,593,795 (num. trained: 47,593,795)
+2024-08-13 17:09:35 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:09:35 | INFO | unicore.utils | rank   0: capabilities =  8.9  ; total memory = 23.650 GB ; name = NVIDIA GeForce RTX 4090 D               
+2024-08-13 17:09:35 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:09:35 | INFO | unicore_cli.train | training on 1 devices (GPUs)
+2024-08-13 17:09:35 | INFO | unicore_cli.train | batch size per device = 16
+2024-08-13 17:09:35 | INFO | unicore.checkpoint_utils | loading pretrained model from /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt: optimizer, lr scheduler, meters, dataloader will be reset
+2024-08-13 17:09:35 | INFO | unicore.trainer | Preparing to load checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt
+2024-08-13 17:09:48 | WARNING | unicore.trainer | Error in loading model state, missing_keys ['node_classification_heads.nmr_head.dense.weight', 'node_classification_heads.nmr_head.dense.bias', 'node_classification_heads.nmr_head.out_proj.weight', 'node_classification_heads.nmr_head.out_proj.bias']
+2024-08-13 17:09:48 | WARNING | unicore.trainer | Error in loading model state, unexpected_keys ['lm_head.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'pair2coord_proj.linear1.weight', 'pair2coord_proj.linear1.bias', 'pair2coord_proj.linear2.weight', 'pair2coord_proj.linear2.bias', 'dist_head.dense.weight', 'dist_head.dense.bias', 'dist_head.layer_norm.weight', 'dist_head.layer_norm.bias', 'dist_head.out_proj.weight', 'dist_head.out_proj.bias', 'encoder.final_head_layer_norm.weight', 'encoder.final_head_layer_norm.bias']
+2024-08-13 17:09:48 | INFO | unicore.trainer | Loaded checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt (epoch 2 @ 0 updates)
+2024-08-13 17:09:48 | INFO | unicore.trainer | loading train data for epoch 1
+2024-08-13 17:09:49 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:09:49 | INFO | unicore.optim.adam | using FusedAdam
+2024-08-13 17:09:49 | INFO | unicore.trainer | begin training epoch 1
+2024-08-13 17:09:49 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:10:01 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:10:01 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:10:02 | INFO | valid | epoch 001 | valid on 'valid' subset | loss 0.011 | valid_r2 0.8376 | valid_mae 18.5884 | valid_mse 774.709 | valid_rmse 27.8336 | bsz 1057 | num_updates 265
+2024-08-13 17:10:02 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 1 @ 265 updates
+2024-08-13 17:10:02 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:10:03 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:10:03 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint1.pt (epoch 1 @ 265 updates, score 27.8336) (writing took 1.0551179917529225 seconds)
+2024-08-13 17:10:03 | INFO | unicore_cli.train | end of epoch 1 (average epoch stats below)
+2024-08-13 17:10:03 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint1.pt
+2024-08-13 17:10:03 | INFO | train | epoch 001 | loss 0.026 | ups 23.9 | bsz 16 | num_updates 265 | lr 8.51319e-05 | gnorm 1.83 | clip 81.9 | loss_scale 8 | train_wall 10.59 | gb_free 20.8 | wall 27
+2024-08-13 17:10:03 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 2
+2024-08-13 17:10:03 | INFO | unicore.trainer | begin training epoch 2
+2024-08-13 17:10:03 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:10:04 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_best.pt
+2024-08-13 17:10:05 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_last.pt
+2024-08-13 17:10:06 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint1.pt ...
+2024-08-13 17:10:06 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:10:12 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:10:12 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:10:14 | INFO | valid | epoch 002 | valid on 'valid' subset | loss 0.007 | valid_r2 0.8904 | valid_mae 16.0177 | valid_mse 522.924 | valid_rmse 22.8675 | bsz 1057 | num_updates 530 | best_valid_rmse 22.8675
+2024-08-13 17:10:14 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 2 @ 530 updates
+2024-08-13 17:10:14 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:10:15 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:10:15 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint2.pt (epoch 2 @ 530 updates, score 22.8675) (writing took 0.8596021123230457 seconds)
+2024-08-13 17:10:15 | INFO | unicore_cli.train | end of epoch 2 (average epoch stats below)
+2024-08-13 17:10:15 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint2.pt
+2024-08-13 17:10:15 | INFO | train | epoch 002 | loss 0.01 | ups 22.67 | bsz 16 | num_updates 530 | lr 6.39488e-05 | gnorm 1.45 | clip 64.5 | loss_scale 16 | train_wall 8.19 | gb_free 20.8 | wall 39
+2024-08-13 17:10:15 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 3
+2024-08-13 17:10:15 | INFO | unicore.trainer | begin training epoch 3
+2024-08-13 17:10:15 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:10:16 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_best.pt
+2024-08-13 17:10:16 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_last.pt
+2024-08-13 17:10:17 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint2.pt ...
+2024-08-13 17:10:17 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint1.pt
+2024-08-13 17:10:17 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:10:23 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:10:23 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:10:24 | INFO | valid | epoch 003 | valid on 'valid' subset | loss 0.005 | valid_r2 0.9259 | valid_mae 11.658 | valid_mse 353.25 | valid_rmse 18.795 | bsz 1057 | num_updates 795 | best_valid_rmse 18.795
+2024-08-13 17:10:24 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 3 @ 795 updates
+2024-08-13 17:10:24 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:10:25 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:10:25 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint3.pt (epoch 3 @ 795 updates, score 18.795) (writing took 0.8454166287556291 seconds)
+2024-08-13 17:10:25 | INFO | unicore_cli.train | end of epoch 3 (average epoch stats below)
+2024-08-13 17:10:25 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint3.pt
+2024-08-13 17:10:25 | INFO | train | epoch 003 | loss 0.005 | ups 24.63 | bsz 16 | num_updates 795 | lr 4.27658e-05 | gnorm 1.107 | clip 40 | loss_scale 32 | train_wall 7.68 | gb_free 20.6 | wall 50
+2024-08-13 17:10:25 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 4
+2024-08-13 17:10:25 | INFO | unicore.trainer | begin training epoch 4
+2024-08-13 17:10:25 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:10:27 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_best.pt
+2024-08-13 17:10:27 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_last.pt
+2024-08-13 17:10:28 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint3.pt ...
+2024-08-13 17:10:28 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint2.pt
+2024-08-13 17:10:28 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:10:33 | INFO | train_inner | epoch 004:    205 / 265 loss=0.012, ups=24.4, bsz=16, num_updates=1000, lr=2.63789e-05, gnorm=1.335, clip=54, loss_scale=32, train_wall=32.81, gb_free=20.8, wall=57
+2024-08-13 17:10:35 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:10:35 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:10:36 | INFO | valid | epoch 004 | valid on 'valid' subset | loss 0.005 | valid_r2 0.9299 | valid_mae 11.5573 | valid_mse 334.274 | valid_rmse 18.2832 | bsz 1057 | num_updates 1060 | best_valid_rmse 18.2832
+2024-08-13 17:10:36 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 4 @ 1060 updates
+2024-08-13 17:10:36 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:10:37 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:10:37 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint4.pt (epoch 4 @ 1060 updates, score 18.2832) (writing took 0.8972945469431579 seconds)
+2024-08-13 17:10:37 | INFO | unicore_cli.train | end of epoch 4 (average epoch stats below)
+2024-08-13 17:10:37 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint4.pt
+2024-08-13 17:10:37 | INFO | train | epoch 004 | loss 0.003 | ups 23.08 | bsz 16 | num_updates 1060 | lr 2.15827e-05 | gnorm 0.853 | clip 23 | loss_scale 64 | train_wall 8.24 | gb_free 20.8 | wall 61
+2024-08-13 17:10:37 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 5
+2024-08-13 17:10:37 | INFO | unicore.trainer | begin training epoch 5
+2024-08-13 17:10:37 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:10:38 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_best.pt
+2024-08-13 17:10:39 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_last.pt
+2024-08-13 17:10:39 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint4.pt ...
+2024-08-13 17:10:39 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint3.pt
+2024-08-13 17:10:39 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:10:47 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:10:47 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:10:48 | INFO | valid | epoch 005 | valid on 'valid' subset | loss 0.004 | valid_r2 0.9443 | valid_mae 10.0426 | valid_mse 265.656 | valid_rmse 16.299 | bsz 1057 | num_updates 1325 | best_valid_rmse 16.299
+2024-08-13 17:10:48 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 5 @ 1325 updates
+2024-08-13 17:10:48 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:10:49 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:10:49 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint5.pt (epoch 5 @ 1325 updates, score 16.299) (writing took 0.8459148318506777 seconds)
+2024-08-13 17:10:49 | INFO | unicore_cli.train | end of epoch 5 (average epoch stats below)
+2024-08-13 17:10:49 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint5.pt
+2024-08-13 17:10:49 | INFO | train | epoch 005 | loss 0.002 | ups 22.48 | bsz 16 | num_updates 1325 | lr 3.9968e-07 | gnorm 0.699 | clip 14.3 | loss_scale 128 | train_wall 8.55 | gb_free 20.8 | wall 73
+2024-08-13 17:10:49 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 6
+2024-08-13 17:10:50 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_best.pt
+2024-08-13 17:10:50 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint_last.pt
+2024-08-13 17:10:51 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint5.pt ...
+2024-08-13 17:10:51 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_2/checkpoint4.pt
+2024-08-13 17:10:51 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:10:51 | INFO | unicore_cli.train | done training in 60.0 seconds
+2024-08-13 17:10:51 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:2 to store for rank: 0
+2024-08-13 17:10:51 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:2 with 1 nodes.
+/root/miniconda3/envs/nmrnet/lib/python3.8/site-packages/torch/distributed/launch.py:180: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torchrun.
+Note that --use_env is set by default in torchrun.
+If your script expects `--local_rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(
+fused_multi_tensor is not installed corrected
+fused_layer_norm is not installed corrected
+fused_softmax is not installed corrected
+2024-08-13 17:10:59 | INFO | unicore.distributed.utils | distributed init (rank 0): env://
+2024-08-13 17:10:59 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 0
+2024-08-13 17:10:59 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 1 nodes.
+2024-08-13 17:10:59 | INFO | unicore.distributed.utils | initialized host di-20240813215254-lqdsd as rank 0
+2024-08-13 17:11:01 | INFO | unicore_cli.train | Namespace(activation_dropout=0.0, activation_fn='gelu', adam_betas='(0.9, 0.99)', adam_eps=1e-06, all_gather_list_size=16384, allreduce_fp32_grad=False, arch='unimol_large', atom_descriptor=0, attention_dropout=0.1, batch_size=16, batch_size_valid=16, best_checkpoint_metric='valid_rmse', bf16=False, bf16_sr=False, broadcast_buffers=False, bucket_cap_mb=25, checkpoint_suffix='', classification_head_name='nmr_head', clip_norm=1.0, conf_size=10, conformer_augmentation=False, cpu=False, curriculum=0, cv_seed=42, data='./demo/data/finetune/ssnmr', data_buffer_size=10, ddp_backend='c10d', delta_pair_repr_norm_loss=-1.0, device_id=0, dict_name='dict.txt', disable_validation=False, distributed_backend='nccl', distributed_init_method='env://', distributed_no_spawn=True, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.1, ema_decay=-1.0, emb_dropout=0.1, empty_cache_freq=0, encoder_attention_heads=64, encoder_embed_dim=512, encoder_ffn_embed_dim=2048, encoder_layers=15, end_learning_rate=0.0, fast_stat_sync=False, find_unused_parameters=False, finetune_from_model='/vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt', fix_batches_to_gpus=False, fixed_validation_seed=None, fold=3, force_anneal=None, fp16=True, fp16_init_scale=4, fp16_no_flatten_grads=False, fp16_scale_tolerance=0.0, fp16_scale_window=256, gaussian_kernel=True, global_distance=False, has_matid=False, keep_best_checkpoints=-1, keep_interval_updates=-1, keep_last_epochs=1, lattice_loss=-1.0, load_from_ema=False, log_format='simple', log_interval=1000, loss='atom_regloss_mse', lr=[0.0001], lr_scheduler='polynomial_decay', masked_coord_loss=-1.0, masked_dist_loss=-1.0, masked_token_loss=-1.0, max_atoms=512, max_epoch=5, max_seq_len=1024, max_update=0, max_valid_steps=None, maximize_best_checkpoint_metric=False, min_loss_scale=0.0001, nfolds=5, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_seed_provided=False, nprocs_per_node=1, num_classes=1, num_workers=8, optimizer='adam', optimizer_overrides='{}', patience=-1, per_sample_clip_norm=0, pooler_activation_fn='tanh', pooler_dropout=0.0, post_ln=False, power=1.0, profile=False, remove_hydrogen=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3', save_interval=1, save_interval_updates=0, saved_dir=None, seed=1, selected_atom='P', skip_invalid_size_inputs_valid_test=False, split_mode='cross_valid', stop_min_lr=-1, stop_time_hours=0, suppress_crashes=False, task='uninmr', tensorboard_logdir='', threshold_loss_scale=None, tmp_save_dir='./', total_num_update=1000000, train_subset='train', update_freq=[1], user_dir='./uninmr', valid_subset='valid', validate_after_updates=0, validate_interval=1, validate_interval_updates=0, validate_with_ema=False, warmup_ratio=0.06, warmup_updates=0, weight_decay=0.0, x_norm_loss=-1.0)
+2024-08-13 17:11:01 | INFO | uninmr.tasks.uninmr | dictionary: 30 types
+2024-08-13 17:11:01 | INFO | unicore_cli.train | UniMatModel(
+  (embed_tokens): Embedding(31, 512, padding_idx=0)
+  (encoder): TransformerEncoderWithPair(
+    (emb_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (5): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (6): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (7): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (8): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (9): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (10): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (11): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (12): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (13): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (14): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (gbf_proj): NonLinearHead(
+    (linear1): Linear(in_features=128, out_features=128, bias=True)
+    (linear2): Linear(in_features=128, out_features=64, bias=True)
+  )
+  (gbf): GaussianLayer(
+    (means): Embedding(1, 128)
+    (stds): Embedding(1, 128)
+    (mul): Embedding(961, 1)
+    (bias): Embedding(961, 1)
+  )
+  (classification_heads): ModuleDict()
+  (node_classification_heads): ModuleDict(
+    (nmr_head): NodeClassificationHead(
+      (dense): Linear(in_features=512, out_features=512, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (out_proj): Linear(in_features=512, out_features=1, bias=True)
+    )
+  )
+)
+2024-08-13 17:11:01 | INFO | unicore_cli.train | task: UniNMRTask
+2024-08-13 17:11:01 | INFO | unicore_cli.train | model: UniMatModel
+2024-08-13 17:11:01 | INFO | unicore_cli.train | loss: AtomRegMSELoss
+2024-08-13 17:11:01 | INFO | unicore_cli.train | num. model params: 47,593,795 (num. trained: 47,593,795)
+2024-08-13 17:11:01 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:11:01 | INFO | unicore.utils | rank   0: capabilities =  8.9  ; total memory = 23.650 GB ; name = NVIDIA GeForce RTX 4090 D               
+2024-08-13 17:11:01 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:11:01 | INFO | unicore_cli.train | training on 1 devices (GPUs)
+2024-08-13 17:11:01 | INFO | unicore_cli.train | batch size per device = 16
+2024-08-13 17:11:01 | INFO | unicore.checkpoint_utils | loading pretrained model from /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt: optimizer, lr scheduler, meters, dataloader will be reset
+2024-08-13 17:11:01 | INFO | unicore.trainer | Preparing to load checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt
+2024-08-13 17:11:04 | WARNING | unicore.trainer | Error in loading model state, missing_keys ['node_classification_heads.nmr_head.dense.weight', 'node_classification_heads.nmr_head.dense.bias', 'node_classification_heads.nmr_head.out_proj.weight', 'node_classification_heads.nmr_head.out_proj.bias']
+2024-08-13 17:11:04 | WARNING | unicore.trainer | Error in loading model state, unexpected_keys ['lm_head.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'pair2coord_proj.linear1.weight', 'pair2coord_proj.linear1.bias', 'pair2coord_proj.linear2.weight', 'pair2coord_proj.linear2.bias', 'dist_head.dense.weight', 'dist_head.dense.bias', 'dist_head.layer_norm.weight', 'dist_head.layer_norm.bias', 'dist_head.out_proj.weight', 'dist_head.out_proj.bias', 'encoder.final_head_layer_norm.weight', 'encoder.final_head_layer_norm.bias']
+2024-08-13 17:11:04 | INFO | unicore.trainer | Loaded checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt (epoch 2 @ 0 updates)
+2024-08-13 17:11:04 | INFO | unicore.trainer | loading train data for epoch 1
+2024-08-13 17:11:04 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:11:04 | INFO | unicore.optim.adam | using FusedAdam
+2024-08-13 17:11:04 | INFO | unicore.trainer | begin training epoch 1
+2024-08-13 17:11:04 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:11:16 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:11:16 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:11:17 | INFO | valid | epoch 001 | valid on 'valid' subset | loss 0.015 | valid_r2 0.7878 | valid_mae 20.4473 | valid_mse 949.383 | valid_rmse 30.8121 | bsz 1057 | num_updates 265
+2024-08-13 17:11:17 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 1 @ 265 updates
+2024-08-13 17:11:17 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:11:18 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:11:18 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint1.pt (epoch 1 @ 265 updates, score 30.8121) (writing took 0.912277712021023 seconds)
+2024-08-13 17:11:18 | INFO | unicore_cli.train | end of epoch 1 (average epoch stats below)
+2024-08-13 17:11:18 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint1.pt
+2024-08-13 17:11:18 | INFO | train | epoch 001 | loss 0.025 | ups 23.44 | bsz 16 | num_updates 265 | lr 8.51319e-05 | gnorm 1.721 | clip 78.9 | loss_scale 8 | train_wall 10.16 | gb_free 20.8 | wall 17
+2024-08-13 17:11:18 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 2
+2024-08-13 17:11:18 | INFO | unicore.trainer | begin training epoch 2
+2024-08-13 17:11:18 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:11:19 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_best.pt
+2024-08-13 17:11:20 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_last.pt
+2024-08-13 17:11:21 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint1.pt ...
+2024-08-13 17:11:21 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:11:27 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:11:27 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:11:29 | INFO | valid | epoch 002 | valid on 'valid' subset | loss 0.01 | valid_r2 0.8838 | valid_mae 14.4463 | valid_mse 520.034 | valid_rmse 22.8043 | bsz 1057 | num_updates 530 | best_valid_rmse 22.8043
+2024-08-13 17:11:29 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 2 @ 530 updates
+2024-08-13 17:11:29 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:11:30 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:11:30 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint2.pt (epoch 2 @ 530 updates, score 22.8043) (writing took 0.8926033419556916 seconds)
+2024-08-13 17:11:30 | INFO | unicore_cli.train | end of epoch 2 (average epoch stats below)
+2024-08-13 17:11:30 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint2.pt
+2024-08-13 17:11:30 | INFO | train | epoch 002 | loss 0.009 | ups 23.07 | bsz 16 | num_updates 530 | lr 6.39488e-05 | gnorm 1.279 | clip 57.4 | loss_scale 16 | train_wall 8.26 | gb_free 20.8 | wall 28
+2024-08-13 17:11:30 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 3
+2024-08-13 17:11:30 | INFO | unicore.trainer | begin training epoch 3
+2024-08-13 17:11:30 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:11:31 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_best.pt
+2024-08-13 17:11:32 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_last.pt
+2024-08-13 17:11:32 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint2.pt ...
+2024-08-13 17:11:32 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint1.pt
+2024-08-13 17:11:32 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:11:39 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:11:39 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:11:40 | INFO | valid | epoch 003 | valid on 'valid' subset | loss 0.004 | valid_r2 0.9332 | valid_mae 11.3535 | valid_mse 298.755 | valid_rmse 17.2845 | bsz 1057 | num_updates 795 | best_valid_rmse 17.2845
+2024-08-13 17:11:40 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 3 @ 795 updates
+2024-08-13 17:11:40 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:11:41 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:11:41 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint3.pt (epoch 3 @ 795 updates, score 17.2845) (writing took 0.8747338159009814 seconds)
+2024-08-13 17:11:41 | INFO | unicore_cli.train | end of epoch 3 (average epoch stats below)
+2024-08-13 17:11:41 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint3.pt
+2024-08-13 17:11:41 | INFO | train | epoch 003 | loss 0.005 | ups 23.4 | bsz 16 | num_updates 795 | lr 4.27658e-05 | gnorm 1.068 | clip 41.1 | loss_scale 32 | train_wall 8.25 | gb_free 20.6 | wall 39
+2024-08-13 17:11:41 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 4
+2024-08-13 17:11:41 | INFO | unicore.trainer | begin training epoch 4
+2024-08-13 17:11:41 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:11:42 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_best.pt
+2024-08-13 17:11:43 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_last.pt
+2024-08-13 17:11:43 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint3.pt ...
+2024-08-13 17:11:43 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint2.pt
+2024-08-13 17:11:43 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:11:48 | INFO | train_inner | epoch 004:    205 / 265 loss=0.011, ups=24.06, bsz=16, num_updates=1000, lr=2.63789e-05, gnorm=1.245, clip=52.1, loss_scale=32, train_wall=33.13, gb_free=20.8, wall=47
+2024-08-13 17:11:50 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:11:50 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:11:51 | INFO | valid | epoch 004 | valid on 'valid' subset | loss 0.004 | valid_r2 0.9437 | valid_mae 11.1543 | valid_mse 251.765 | valid_rmse 15.8671 | bsz 1057 | num_updates 1060 | best_valid_rmse 15.8671
+2024-08-13 17:11:51 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 4 @ 1060 updates
+2024-08-13 17:11:51 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:11:52 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:11:52 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint4.pt (epoch 4 @ 1060 updates, score 15.8671) (writing took 0.8642700118944049 seconds)
+2024-08-13 17:11:52 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint4.pt
+2024-08-13 17:11:52 | INFO | unicore_cli.train | end of epoch 4 (average epoch stats below)
+2024-08-13 17:11:52 | INFO | train | epoch 004 | loss 0.003 | ups 23.17 | bsz 16 | num_updates 1060 | lr 2.15827e-05 | gnorm 0.852 | clip 26 | loss_scale 64 | train_wall 8.41 | gb_free 20.8 | wall 51
+2024-08-13 17:11:52 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 5
+2024-08-13 17:11:52 | INFO | unicore.trainer | begin training epoch 5
+2024-08-13 17:11:52 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:11:54 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_best.pt
+2024-08-13 17:11:54 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_last.pt
+2024-08-13 17:11:55 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint4.pt ...
+2024-08-13 17:11:55 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint3.pt
+2024-08-13 17:11:55 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:12:02 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:12:02 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:12:03 | INFO | valid | epoch 005 | valid on 'valid' subset | loss 0.004 | valid_r2 0.9507 | valid_mae 9.9457 | valid_mse 220.588 | valid_rmse 14.8522 | bsz 1057 | num_updates 1325 | best_valid_rmse 14.8522
+2024-08-13 17:12:03 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 5 @ 1325 updates
+2024-08-13 17:12:03 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:12:04 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:12:04 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint5.pt (epoch 5 @ 1325 updates, score 14.8522) (writing took 0.9073696862906218 seconds)
+2024-08-13 17:12:04 | INFO | unicore_cli.train | end of epoch 5 (average epoch stats below)
+2024-08-13 17:12:04 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint5.pt
+2024-08-13 17:12:04 | INFO | train | epoch 005 | loss 0.002 | ups 22.17 | bsz 16 | num_updates 1325 | lr 3.9968e-07 | gnorm 0.725 | clip 11.7 | loss_scale 128 | train_wall 8.68 | gb_free 20.8 | wall 63
+2024-08-13 17:12:04 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 6
+2024-08-13 17:12:06 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_best.pt
+2024-08-13 17:12:07 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint_last.pt
+2024-08-13 17:12:07 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint5.pt ...
+2024-08-13 17:12:07 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_3/checkpoint4.pt
+2024-08-13 17:12:07 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:12:07 | INFO | unicore_cli.train | done training in 59.8 seconds
+2024-08-13 17:12:07 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:2 to store for rank: 0
+2024-08-13 17:12:07 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:2 with 1 nodes.
+/root/miniconda3/envs/nmrnet/lib/python3.8/site-packages/torch/distributed/launch.py:180: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torchrun.
+Note that --use_env is set by default in torchrun.
+If your script expects `--local_rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(
+fused_multi_tensor is not installed corrected
+fused_layer_norm is not installed corrected
+fused_softmax is not installed corrected
+2024-08-13 17:12:16 | INFO | unicore.distributed.utils | distributed init (rank 0): env://
+2024-08-13 17:12:16 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 0
+2024-08-13 17:12:16 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 1 nodes.
+2024-08-13 17:12:16 | INFO | unicore.distributed.utils | initialized host di-20240813215254-lqdsd as rank 0
+2024-08-13 17:12:18 | INFO | unicore_cli.train | Namespace(activation_dropout=0.0, activation_fn='gelu', adam_betas='(0.9, 0.99)', adam_eps=1e-06, all_gather_list_size=16384, allreduce_fp32_grad=False, arch='unimol_large', atom_descriptor=0, attention_dropout=0.1, batch_size=16, batch_size_valid=16, best_checkpoint_metric='valid_rmse', bf16=False, bf16_sr=False, broadcast_buffers=False, bucket_cap_mb=25, checkpoint_suffix='', classification_head_name='nmr_head', clip_norm=1.0, conf_size=10, conformer_augmentation=False, cpu=False, curriculum=0, cv_seed=42, data='./demo/data/finetune/ssnmr', data_buffer_size=10, ddp_backend='c10d', delta_pair_repr_norm_loss=-1.0, device_id=0, dict_name='dict.txt', disable_validation=False, distributed_backend='nccl', distributed_init_method='env://', distributed_no_spawn=True, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.1, ema_decay=-1.0, emb_dropout=0.1, empty_cache_freq=0, encoder_attention_heads=64, encoder_embed_dim=512, encoder_ffn_embed_dim=2048, encoder_layers=15, end_learning_rate=0.0, fast_stat_sync=False, find_unused_parameters=False, finetune_from_model='/vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt', fix_batches_to_gpus=False, fixed_validation_seed=None, fold=4, force_anneal=None, fp16=True, fp16_init_scale=4, fp16_no_flatten_grads=False, fp16_scale_tolerance=0.0, fp16_scale_window=256, gaussian_kernel=True, global_distance=False, has_matid=False, keep_best_checkpoints=-1, keep_interval_updates=-1, keep_last_epochs=1, lattice_loss=-1.0, load_from_ema=False, log_format='simple', log_interval=1000, loss='atom_regloss_mse', lr=[0.0001], lr_scheduler='polynomial_decay', masked_coord_loss=-1.0, masked_dist_loss=-1.0, masked_token_loss=-1.0, max_atoms=512, max_epoch=5, max_seq_len=1024, max_update=0, max_valid_steps=None, maximize_best_checkpoint_metric=False, min_loss_scale=0.0001, nfolds=5, no_epoch_checkpoints=False, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, no_seed_provided=False, nprocs_per_node=1, num_classes=1, num_workers=8, optimizer='adam', optimizer_overrides='{}', patience=-1, per_sample_clip_norm=0, pooler_activation_fn='tanh', pooler_dropout=0.0, post_ln=False, power=1.0, profile=False, remove_hydrogen=False, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4', save_interval=1, save_interval_updates=0, saved_dir=None, seed=1, selected_atom='P', skip_invalid_size_inputs_valid_test=False, split_mode='cross_valid', stop_min_lr=-1, stop_time_hours=0, suppress_crashes=False, task='uninmr', tensorboard_logdir='', threshold_loss_scale=None, tmp_save_dir='./', total_num_update=1000000, train_subset='train', update_freq=[1], user_dir='./uninmr', valid_subset='valid', validate_after_updates=0, validate_interval=1, validate_interval_updates=0, validate_with_ema=False, warmup_ratio=0.06, warmup_updates=0, weight_decay=0.0, x_norm_loss=-1.0)
+2024-08-13 17:12:18 | INFO | uninmr.tasks.uninmr | dictionary: 30 types
+2024-08-13 17:12:19 | INFO | unicore_cli.train | UniMatModel(
+  (embed_tokens): Embedding(31, 512, padding_idx=0)
+  (encoder): TransformerEncoderWithPair(
+    (emb_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+    (layers): ModuleList(
+      (0): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (1): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (2): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (3): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (4): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (5): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (6): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (7): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (8): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (9): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (10): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (11): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (12): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (13): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+      (14): TransformerEncoderLayer(
+        (self_attn): SelfMultiheadAttention(
+          (in_proj): Linear(in_features=512, out_features=1536, bias=True)
+          (out_proj): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (self_attn_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (final_layer_norm): LayerNorm(torch.Size([512]), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (gbf_proj): NonLinearHead(
+    (linear1): Linear(in_features=128, out_features=128, bias=True)
+    (linear2): Linear(in_features=128, out_features=64, bias=True)
+  )
+  (gbf): GaussianLayer(
+    (means): Embedding(1, 128)
+    (stds): Embedding(1, 128)
+    (mul): Embedding(961, 1)
+    (bias): Embedding(961, 1)
+  )
+  (classification_heads): ModuleDict()
+  (node_classification_heads): ModuleDict(
+    (nmr_head): NodeClassificationHead(
+      (dense): Linear(in_features=512, out_features=512, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (out_proj): Linear(in_features=512, out_features=1, bias=True)
+    )
+  )
+)
+2024-08-13 17:12:19 | INFO | unicore_cli.train | task: UniNMRTask
+2024-08-13 17:12:19 | INFO | unicore_cli.train | model: UniMatModel
+2024-08-13 17:12:19 | INFO | unicore_cli.train | loss: AtomRegMSELoss
+2024-08-13 17:12:19 | INFO | unicore_cli.train | num. model params: 47,593,795 (num. trained: 47,593,795)
+2024-08-13 17:12:19 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:12:19 | INFO | unicore.utils | rank   0: capabilities =  8.9  ; total memory = 23.650 GB ; name = NVIDIA GeForce RTX 4090 D               
+2024-08-13 17:12:19 | INFO | unicore.utils | ***********************CUDA enviroments for all 1 workers***********************
+2024-08-13 17:12:19 | INFO | unicore_cli.train | training on 1 devices (GPUs)
+2024-08-13 17:12:19 | INFO | unicore_cli.train | batch size per device = 16
+2024-08-13 17:12:19 | INFO | unicore.checkpoint_utils | loading pretrained model from /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt: optimizer, lr scheduler, meters, dataloader will be reset
+2024-08-13 17:12:19 | INFO | unicore.trainer | Preparing to load checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt
+2024-08-13 17:12:22 | WARNING | unicore.trainer | Error in loading model state, missing_keys ['node_classification_heads.nmr_head.dense.weight', 'node_classification_heads.nmr_head.dense.bias', 'node_classification_heads.nmr_head.out_proj.weight', 'node_classification_heads.nmr_head.out_proj.bias']
+2024-08-13 17:12:22 | WARNING | unicore.trainer | Error in loading model state, unexpected_keys ['lm_head.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'pair2coord_proj.linear1.weight', 'pair2coord_proj.linear1.bias', 'pair2coord_proj.linear2.weight', 'pair2coord_proj.linear2.bias', 'dist_head.dense.weight', 'dist_head.dense.bias', 'dist_head.layer_norm.weight', 'dist_head.layer_norm.bias', 'dist_head.out_proj.weight', 'dist_head.out_proj.bias', 'encoder.final_head_layer_norm.weight', 'encoder.final_head_layer_norm.bias']
+2024-08-13 17:12:22 | INFO | unicore.trainer | Loaded checkpoint /vepfs/fs_ckps/xufanjie/UniNMR/saved/pretrain_csd_limit_rcut6_bs256_2.pt (epoch 2 @ 0 updates)
+2024-08-13 17:12:22 | INFO | unicore.trainer | loading train data for epoch 1
+2024-08-13 17:12:22 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:12:22 | INFO | unicore.optim.adam | using FusedAdam
+2024-08-13 17:12:22 | INFO | unicore.trainer | begin training epoch 1
+2024-08-13 17:12:22 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:12:33 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:12:33 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:12:34 | INFO | valid | epoch 001 | valid on 'valid' subset | loss 0.01 | valid_r2 0.8414 | valid_mae 17.694 | valid_mse 706.291 | valid_rmse 26.5761 | bsz 1056 | num_updates 265
+2024-08-13 17:12:34 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 1 @ 265 updates
+2024-08-13 17:12:34 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:12:35 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint1.pt
+2024-08-13 17:12:35 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint1.pt (epoch 1 @ 265 updates, score 26.5761) (writing took 0.8615567772649229 seconds)
+2024-08-13 17:12:35 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint1.pt
+2024-08-13 17:12:35 | INFO | unicore_cli.train | end of epoch 1 (average epoch stats below)
+2024-08-13 17:12:35 | INFO | train | epoch 001 | loss 0.026 | ups 24.71 | bsz 16 | num_updates 265 | lr 8.51319e-05 | gnorm 1.648 | clip 78.5 | loss_scale 8 | train_wall 9.81 | gb_free 20.8 | wall 16
+2024-08-13 17:12:35 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 2
+2024-08-13 17:12:35 | INFO | unicore.trainer | begin training epoch 2
+2024-08-13 17:12:35 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:12:37 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_best.pt
+2024-08-13 17:12:37 | INFO | unicore.checkpoint_utils | copy ./checkpoint1.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_last.pt
+2024-08-13 17:12:38 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint1.pt ...
+2024-08-13 17:12:38 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:12:44 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:12:44 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:12:46 | INFO | valid | epoch 002 | valid on 'valid' subset | loss 0.006 | valid_r2 0.9067 | valid_mae 13.9172 | valid_mse 415.356 | valid_rmse 20.3803 | bsz 1056 | num_updates 530 | best_valid_rmse 20.3803
+2024-08-13 17:12:46 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 2 @ 530 updates
+2024-08-13 17:12:46 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:12:46 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint2.pt
+2024-08-13 17:12:46 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint2.pt (epoch 2 @ 530 updates, score 20.3803) (writing took 0.8831281061284244 seconds)
+2024-08-13 17:12:46 | INFO | unicore_cli.train | end of epoch 2 (average epoch stats below)
+2024-08-13 17:12:46 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint2.pt
+2024-08-13 17:12:46 | INFO | train | epoch 002 | loss 0.01 | ups 23.59 | bsz 16 | num_updates 530 | lr 6.39488e-05 | gnorm 1.408 | clip 63 | loss_scale 16 | train_wall 8.1 | gb_free 20.8 | wall 28
+2024-08-13 17:12:46 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 3
+2024-08-13 17:12:46 | INFO | unicore.trainer | begin training epoch 3
+2024-08-13 17:12:46 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:12:48 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_best.pt
+2024-08-13 17:12:48 | INFO | unicore.checkpoint_utils | copy ./checkpoint2.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_last.pt
+2024-08-13 17:12:49 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint2.pt ...
+2024-08-13 17:12:49 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint1.pt
+2024-08-13 17:12:49 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:12:56 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:12:56 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:12:57 | INFO | valid | epoch 003 | valid on 'valid' subset | loss 0.004 | valid_r2 0.926 | valid_mae 11.838 | valid_mse 329.417 | valid_rmse 18.1498 | bsz 1056 | num_updates 795 | best_valid_rmse 18.1498
+2024-08-13 17:12:57 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 3 @ 795 updates
+2024-08-13 17:12:57 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:12:58 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint3.pt
+2024-08-13 17:12:58 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint3.pt (epoch 3 @ 795 updates, score 18.1498) (writing took 0.85324985999614 seconds)
+2024-08-13 17:12:58 | INFO | unicore_cli.train | end of epoch 3 (average epoch stats below)
+2024-08-13 17:12:58 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint3.pt
+2024-08-13 17:12:58 | INFO | train | epoch 003 | loss 0.005 | ups 22.75 | bsz 16 | num_updates 795 | lr 4.27658e-05 | gnorm 1.063 | clip 38.1 | loss_scale 32 | train_wall 8.49 | gb_free 20.6 | wall 39
+2024-08-13 17:12:58 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 4
+2024-08-13 17:12:58 | INFO | unicore.trainer | begin training epoch 4
+2024-08-13 17:12:58 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:12:59 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_best.pt
+2024-08-13 17:13:00 | INFO | unicore.checkpoint_utils | copy ./checkpoint3.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_last.pt
+2024-08-13 17:13:01 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint3.pt ...
+2024-08-13 17:13:01 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint2.pt
+2024-08-13 17:13:01 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:13:05 | INFO | train_inner | epoch 004:    205 / 265 loss=0.012, ups=24.64, bsz=16, num_updates=1000, lr=2.63789e-05, gnorm=1.253, clip=52.4, loss_scale=32, train_wall=32.39, gb_free=20.8, wall=46
+2024-08-13 17:13:07 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:13:07 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:13:08 | INFO | valid | epoch 004 | valid on 'valid' subset | loss 0.003 | valid_r2 0.9448 | valid_mae 10.5441 | valid_mse 245.669 | valid_rmse 15.6738 | bsz 1056 | num_updates 1060 | best_valid_rmse 15.6738
+2024-08-13 17:13:08 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 4 @ 1060 updates
+2024-08-13 17:13:08 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:13:09 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint4.pt
+2024-08-13 17:13:09 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint4.pt (epoch 4 @ 1060 updates, score 15.6738) (writing took 0.8369355057366192 seconds)
+2024-08-13 17:13:09 | INFO | unicore_cli.train | end of epoch 4 (average epoch stats below)
+2024-08-13 17:13:09 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint4.pt
+2024-08-13 17:13:09 | INFO | train | epoch 004 | loss 0.003 | ups 24.58 | bsz 16 | num_updates 1060 | lr 2.15827e-05 | gnorm 0.799 | clip 22.6 | loss_scale 64 | train_wall 7.7 | gb_free 20.8 | wall 50
+2024-08-13 17:13:09 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 5
+2024-08-13 17:13:09 | INFO | unicore.trainer | begin training epoch 5
+2024-08-13 17:13:09 | INFO | unicore_cli.train | Start iterating over samples
+2024-08-13 17:13:10 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_best.pt
+2024-08-13 17:13:11 | INFO | unicore.checkpoint_utils | copy ./checkpoint4.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_last.pt
+2024-08-13 17:13:12 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint4.pt ...
+2024-08-13 17:13:12 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint3.pt
+2024-08-13 17:13:12 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:13:18 | INFO | unicore_cli.train | begin validation on "valid" subset
+2024-08-13 17:13:18 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 1
+2024-08-13 17:13:19 | INFO | valid | epoch 005 | valid on 'valid' subset | loss 0.003 | valid_r2 0.9459 | valid_mae 10.0526 | valid_mse 241.153 | valid_rmse 15.5291 | bsz 1056 | num_updates 1325 | best_valid_rmse 15.5291
+2024-08-13 17:13:19 | INFO | unicore.checkpoint_utils | Preparing to save checkpoint for epoch 5 @ 1325 updates
+2024-08-13 17:13:19 | INFO | unicore.trainer | Saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:13:20 | INFO | unicore.trainer | Finished saving checkpoint to ./checkpoint5.pt
+2024-08-13 17:13:20 | INFO | unicore.checkpoint_utils | Saved checkpoint ./checkpoint5.pt (epoch 5 @ 1325 updates, score 15.5291) (writing took 0.8406207808293402 seconds)
+2024-08-13 17:13:20 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint5.pt
+2024-08-13 17:13:20 | INFO | unicore_cli.train | end of epoch 5 (average epoch stats below)
+2024-08-13 17:13:20 | INFO | train | epoch 005 | loss 0.002 | ups 23.36 | bsz 16 | num_updates 1325 | lr 3.9968e-07 | gnorm 0.731 | clip 15.1 | loss_scale 128 | train_wall 8.29 | gb_free 20.8 | wall 61
+2024-08-13 17:13:20 | INFO | unicore.tasks.unicore_task | get EpochBatchIterator for epoch 6
+2024-08-13 17:13:22 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_best.pt
+2024-08-13 17:13:22 | INFO | unicore.checkpoint_utils | copy ./checkpoint5.pt to ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint_last.pt
+2024-08-13 17:13:23 | INFO | unicore.checkpoint_utils | removing temp file ./checkpoint5.pt ...
+2024-08-13 17:13:23 | INFO | unicore.checkpoint_utils | removed ./demo/output/finetune/ssnmr/5cv/P_pretrain_csd_limit_rcut6_bs256_2_global__kener__atomdes__unimol_large_atom_regloss_mse_lr_0.0001_bs_16_0.06_5/cv_seed_42_fold_4/checkpoint4.pt
+2024-08-13 17:13:23 | INFO | unicore.checkpoint_utils | finished async ckp saving.
+2024-08-13 17:13:23 | INFO | unicore_cli.train | done training in 58.1 seconds
+2024-08-13 17:13:23 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:2 to store for rank: 0
+2024-08-13 17:13:23 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:2 with 1 nodes.
+/root/miniconda3/envs/nmrnet/lib/python3.8/site-packages/torch/distributed/launch.py:180: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torchrun.
+Note that --use_env is set by default in torchrun.
+If your script expects `--local_rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(

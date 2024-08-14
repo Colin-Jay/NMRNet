@@ -22,7 +22,15 @@ class LMDBDataset:
         )
         env = self.connect_db(self.db_path)
         with env.begin() as txn:
-            self._keys = list(txn.cursor().iternext(values=False))
+            self.split = os.path.splitext(os.path.basename(self.db_path))[0]
+            self.dbid_file = os.path.join(os.path.dirname(self.db_path), f'{self.split}_dbid.pkl')
+            if os.path.isfile(self.dbid_file):
+                with open(self.dbid_file, 'rb') as f:
+                    self._keys = pickle.load(f)
+            else:
+                self._keys = list(txn.cursor().iternext(values=False))
+                with open(self.dbid_file, 'wb') as f:
+                    pickle.dump(self._keys, f)
 
     def connect_db(self, lmdb_path, save_to_self=False):
         env = lmdb.open(

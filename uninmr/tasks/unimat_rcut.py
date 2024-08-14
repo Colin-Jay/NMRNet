@@ -7,6 +7,7 @@ import os
 
 import numpy as np
 import torch
+import pickle
 from unicore.data import (
     Dictionary,
     NestedDictionaryDataset,
@@ -16,7 +17,6 @@ from unicore.data import (
     EpochShuffleDataset,
     TokenizeDataset,
     RightPadDataset2D,
-    LMDBDataset
 )
 from uninmr.data import (
     KeyDataset,
@@ -28,7 +28,7 @@ from uninmr.data import (
     RightPadDataset3D,
     PrependAndAppend2DDataset,
     PrependAndAppend3DDataset,
-    RightPadDatasetCoord,
+    RightPadDataset2D0,
     LatticeNormalizeDataset,
     LatticeMatrixNormalizeDataset,
     RemoveHydrogenDataset,
@@ -36,6 +36,9 @@ from uninmr.data import (
     NormalizeDataset,
     SelectTokenDataset,
     FilterDataset,
+    EpochResampleDataset,
+    EpochLogResampleDataset,
+    LMDBDataset,
 )
 from unicore.tasks import UnicoreTask, register_task
 from uninmr.utils import parse_select_atom
@@ -129,6 +132,12 @@ class UniMatRCutTask(UnicoreTask):
             default="All",
             help="select atom: All or H or H&C&F...",
         )  
+        parser.add_argument(
+            "--not-resample",
+            action="store_true",
+            help="don't do element resample",
+        )
+
 
     def __init__(self, args, dictionary):
         super().__init__(args)
@@ -151,10 +160,22 @@ class UniMatRCutTask(UnicoreTask):
         """
         split_path = os.path.join(self.args.data, split + ".lmdb")
         dataset = LMDBDataset(split_path)
+
         if self.args.remove_hydrogen:
             dataset = RemoveHydrogenDataset(dataset, 'atoms', 'coordinates')
         dataset = CroppingDataset(dataset, self.args.seed, 'atoms', 'coordinates', self.args.max_atoms)
         dataset = NormalizeDataset(dataset, 'coordinates')
+        if not self.args.not_resample:
+            sample_class_path = os.path.join(self.args.data, split + "_counter.pkl")
+            # with open(sample_class_path, 'r') as json_file:
+            with open(sample_class_path, 'rb') as f:
+                count_dict = pickle.load(f)
+                # count_dict = json.load(json_file)
+
+            if split in ["train", "train.small"]:
+                dataset = EpochResampleDataset(dataset, count_dict, self.args.seed, max_samples_per_class=int(5e5))
+            else:
+                dataset = EpochResampleDataset(dataset, count_dict, self.args.seed, max_samples_per_class=int(1e4))
 
         # lattice_dataset = LatticeNormalizeDataset(dataset, 'abc', 'angles')
         # lattice_dataset = ToTorchDataset(lattice_dataset, 'float32')
@@ -228,7 +249,7 @@ class UniMatRCutTask(UnicoreTask):
                     src_dataset,
                     pad_idx=self.dictionary.pad(),
                 ),
-                "src_coord": RightPadDatasetCoord(
+                "src_coord": RightPadDataset2D0(
                     encoder_coord_dataset,
                     pad_idx=0,
                 ),
@@ -241,13 +262,14 @@ class UniMatRCutTask(UnicoreTask):
         target = {
             "tokens_target": RightPadDataset(tgt_dataset, pad_idx=self.dictionary.pad()),
             "distance_target": distance_dataset,
-            "coord_target": RightPadDatasetCoord(coord_dataset, pad_idx=0),
+            "coord_target": RightPadDataset2D0(coord_dataset, pad_idx=0),
             # "lattice_target": lattice_dataset,
             }
         dataset = {"net_input": net_input, "target": target}
         dataset = NestedDictionaryDataset(
             dataset
         )
+
         if split in ["train", "train.small"]:
             dataset = EpochShuffleDataset(dataset, len(dataset), self.args.seed)
         self.datasets[split] = dataset

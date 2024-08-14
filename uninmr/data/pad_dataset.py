@@ -35,7 +35,7 @@ def collate_tokens_2d(
     pad_to_length=None,
     pad_to_multiple=1,
 ):
-    """Convert a list of 1d tensors into a padded 2d tensor."""
+    """Convert a list of (batchsize, n, n) tensors into a padded (batchsize, size=max(n), size=max(n)) tensor."""
     size = max(v.size(0) for v in values)
     size = size if pad_to_length is None else max(size, pad_to_length)
     if pad_to_multiple != 1 and size % pad_to_multiple != 0:
@@ -46,19 +46,20 @@ def collate_tokens_2d(
         copy_tensor(v, res[i][size - len(v):, size - len(v):] if left_pad else res[i][:len(v), :len(v)])
     return res
 
-def collate_tokens_coords(
+def collate_tokens_nm(
     values,
     pad_idx,
     left_pad=False,
     pad_to_length=None,
     pad_to_multiple=1,
 ):
-    """Convert a list of 1d tensors into a padded 2d tensor."""
+    """Convert a list of (batchsize, n, m) tensors into a padded (batchsize, size=max(n), m) tensor."""
     size = max(v.size(0) for v in values)
+    m = values[0].size(1)
     size = size if pad_to_length is None else max(size, pad_to_length)
     if pad_to_multiple != 1 and size % pad_to_multiple != 0:
         size = int(((size - 0.1) // pad_to_multiple + 1) * pad_to_multiple)
-    res = values[0].new(len(values), size, 3).fill_(pad_idx)
+    res = values[0].new(len(values), size, m).fill_(pad_idx)
     
     for i, v in enumerate(values):
         copy_tensor(v, res[i][size - len(v) :,:] if left_pad else res[i][: len(v),:])
@@ -92,13 +93,13 @@ class RightPadDataset2D(BaseWrapperDataset):
     def collater(self, samples):
         return collate_tokens_2d(samples, self.pad_idx, left_pad=self.left_pad, pad_to_multiple=8)
     
-class RightPadDatasetCoord(BaseWrapperDataset):
+class RightPadDataset2D0(BaseWrapperDataset):
     def __init__(self, dataset, pad_idx,left_pad=False):
         super().__init__(dataset)
         self.pad_idx = pad_idx
         self.left_pad = left_pad
     def collater(self, samples):
-        return collate_tokens_coords(samples, self.pad_idx, left_pad=self.left_pad, pad_to_multiple=8)
+        return collate_tokens_nm(samples, self.pad_idx, left_pad=self.left_pad, pad_to_multiple=8)
 
 class PrependAndAppend2DDataset(BaseWrapperDataset):
     def __init__(self, dataset, token=None):

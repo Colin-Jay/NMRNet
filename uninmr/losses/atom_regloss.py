@@ -4,6 +4,7 @@
 
 import torch
 import numpy as np
+import torch.nn as nn
 import torch.nn.functional as F
 import pandas as pd
 import math
@@ -38,19 +39,22 @@ class AtomRegMSELoss(UnicoreLoss):
         # _mean, _std, _normal_type = ATTR_REGESTRY[self.args.task_name]
         # normalizer = Normalization(_mean, _std, _normal_type)
         loss = self.compute_loss(net_output[0], sample, reduce=reduce)
-
         if not self.training:
             logging_output = {
                 "loss": loss.data,
-                "predict": (torch.from_numpy(self.target_scaler.inverse_transform(net_output[0].view(-1, self.args.num_classes).data.cpu())).to(net_output[0].device).float()),
-                "target": (sample["target"]["finetune_target"].view(-1, self.args.num_classes).data),
+                "predict": self.target_scaler.inverse_transform(net_output[0].view(-1, self.args.num_classes).data.cpu()).astype('float32'),
+                "target": self.target_scaler.inverse_transform((sample["target"]["finetune_target"].view(-1, self.args.num_classes))[select_atom==1].view(-1, self.args.num_classes).data.cpu()).astype('float32'),
                 "src_token": src_token,
                 "select_atom": select_atom,
                 "sample_size": sample_size,
                 "matid": sample["matid"],
                 "num_task": self.args.num_classes,
+                # "encoder_rep": net_output[6],
             }
-            # print("matid", sample["matid"])
+            # print("predict_output", self.target_scaler.inverse_transform(net_output[0].view(-1, self.args.num_classes).data.cpu()))
+            # print("target_out", (sample["target"]["finetune_target"].view(-1, self.args.num_classes))[select_atom==1].view(-1, self.args.num_classes).data.cpu())
+            # print("predict", self.target_scaler.inverse_transform(net_output[0].view(-1, self.args.num_classes).data.cpu()).astype('float32'))
+            # print("target", self.target_scaler.inverse_transform((sample["target"]["finetune_target"].view(-1, self.args.num_classes))[select_atom==1].view(-1, self.args.num_classes).data.cpu()).astype('float32'))
         else:
             logging_output = {
                 "loss": loss.data,
@@ -64,11 +68,11 @@ class AtomRegMSELoss(UnicoreLoss):
         select_atom = sample["net_input"]["select_atom"].view(-1, 1)
         predicts = net_output.view(-1, self.args.num_classes).float()
         targets = sample['target']['finetune_target'].view(-1, self.args.num_classes).float()
-        normalize_targets = torch.from_numpy(self.target_scaler.transform(targets.cpu())).to(targets.device).float()
+        # normalize_targets = torch.from_numpy(self.target_scaler.transform(targets.cpu())).to(targets.device).float()
         loss = F.mse_loss(    # l1_loss mse_loss
-            predicts[select_atom==1],
-            normalize_targets[select_atom==1],
-            reduction="sum" if reduce else "none",
+            predicts,
+            targets[select_atom==1].view(-1, self.args.num_classes),
+            # reduction="sum" if reduce else "none",
         )
         return loss
 
@@ -90,10 +94,10 @@ class AtomRegMSELoss(UnicoreLoss):
             return r2, mae, mse, rmse
 
         if 'valid' in split or 'test' in split:
-            predicts = torch.cat([log.get("predict")[log.get("select_atom")==1] for log in logging_outputs], dim=0)
-            predicts = predicts.detach().cpu().numpy()
-            targets = torch.cat([log.get("target")[log.get("select_atom")==1] for log in logging_outputs], dim=0)
-            targets = targets.detach().cpu().numpy()
+            predicts = np.concatenate([log.get("predict") for log in logging_outputs], axis=0)
+            # predicts = predicts.detach().cpu().numpy()
+            targets = np.concatenate([log.get("target") for log in logging_outputs], axis=0)
+            # targets = targets.detach().cpu().numpy()
             ##### 
             r2, mae, mse, rmse = reg_metrics(targets, predicts)
             metrics.log_scalar("{}_r2".format(split), r2, sample_size, round=4)
@@ -121,7 +125,6 @@ class AtomRegMAELoss(AtomRegMSELoss):
         super().__init__(task)
         # self.target_scaler = TargetScaler()
         self.target_scaler = task.target_scaler
-
     # def forward(self, model, sample, reduce=True):
     #     """Compute the loss for the given sample.
 
@@ -164,12 +167,18 @@ class AtomRegMAELoss(AtomRegMSELoss):
         select_atom = sample["net_input"]["select_atom"].view(-1, 1)
         predicts = net_output.view(-1, self.args.num_classes).float()
         targets = sample['target']['finetune_target'].view(-1, self.args.num_classes).float()
-        normalize_targets = torch.from_numpy(self.target_scaler.transform(targets.cpu())).to(targets.device).float()
+        # print("loss.py", predicts, targets)
+        # normalize_targets = torch.from_numpy(self.target_scaler.transform(targets.cpu())).to(targets.device).float()
         loss = F.l1_loss(    # l1_loss mse_loss
-            predicts[select_atom==1],
-            normalize_targets[select_atom==1],
-            reduction="sum" if reduce else "none",
+            predicts,
+            targets[select_atom==1].view(-1, self.args.num_classes),
+            # reduction="sum" if reduce else "none",
         )
+        # l1_loss = nn.L1Loss()
+        # loss = l1_loss(    # l1_loss mse_loss
+        #     predicts[select_atom==1],
+        #     normalize_targets[select_atom==1],
+        # )
         return loss
 
     # @staticmethod

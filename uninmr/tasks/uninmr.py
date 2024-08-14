@@ -16,6 +16,7 @@ from unicore.data import (
     EpochShuffleDataset,
     TokenizeDataset,
     RightPadDataset2D,
+    LMDBDataset,
     RawLabelDataset,
 )
 from uninmr.data import (
@@ -32,13 +33,13 @@ from uninmr.data import (
     RightPadDataset3D,
     PrependAndAppend2DDataset,
     PrependAndAppend3DDataset,
-    RightPadDatasetCoord,
+    RightPadDataset2D0,
     LatticeNormalizeDataset,
     LatticeMatrixNormalizeDataset,
     RemoveHydrogenDataset,
     CroppingDataset,
     NormalizeDataset,
-    LMDBDataset,
+    TargetScalerDataset,
     FoldLMDBDataset,
     StackedLMDBDataset,
     SplitLMDBDataset,
@@ -114,6 +115,12 @@ class UniNMRTask(UnicoreTask):
             help="use global distance",
         )  
         parser.add_argument(
+            "--atom-descriptor",
+            type=int,
+            default=0,
+            help="use extra atom descriptor",
+        )  
+        parser.add_argument(
             "--selected-atom",
             default="All",
             help="select atom: All or H or H&C&F...",
@@ -153,7 +160,19 @@ class UniNMRTask(UnicoreTask):
         if args.saved_dir == None:
             self.args.saved_dir = args.save_dir
         self.target_scaler = TargetScaler(args.saved_dir)
-        if self.args.split_mode !='predefine':
+
+        if self.args.split_mode =='predefine':
+            train_path = os.path.join(self.args.data, "train" + ".lmdb")
+            self.train_dataset = LMDBDataset(train_path)
+            valid_path = os.path.join(self.args.data, "valid" + ".lmdb")
+            self.valid_dataset = LMDBDataset(valid_path)
+            atoms_target = np.concatenate([np.array(self.train_dataset[i]['atoms_target']) for i in range(len(self.train_dataset))], axis=0) 
+            atoms_target_mask = np.concatenate([np.array(self.train_dataset[i]['atoms_target_mask']) for i in range(len(self.train_dataset))], axis=0) 
+            self.target_scaler.fit(target=atoms_target[atoms_target_mask==1].reshape(-1, self.args.num_classes), num_classes=self.args.num_classes, dump_dir=self.args.save_dir)
+        elif self.args.split_mode == 'infer':
+            valid_path = os.path.join(self.args.data, "valid" + ".lmdb")
+            self.valid_dataset = LMDBDataset(valid_path)
+        else:
             self.__init_data()
 
     def __init_data(self):
@@ -192,18 +211,18 @@ class UniNMRTask(UnicoreTask):
             split (str): name of the data scoure (e.g., train)
         """
         # self.split = split
-        if self.args.split_mode != 'predefine':
-            if split == 'train':
-                dataset = self.train_dataset
-            elif split == 'valid':
-                dataset =self.valid_dataset
-        else:
-            split_path = os.path.join(self.args.data, split + ".lmdb")
-            dataset = LMDBDataset(split_path)
-            if split == 'train':
-                atoms_target = np.concatenate([np.array(dataset[i]['atoms_target']) for i in range(len(dataset))], axis=0) 
-                atoms_target_mask = np.concatenate([np.array(dataset[i]['atoms_target_mask']) for i in range(len(dataset))], axis=0) 
-                self.target_scaler.fit(target=atoms_target[atoms_target_mask==1].reshape(-1, self.args.num_classes), num_classes=self.args.num_classes, dump_dir=self.args.save_dir)
+        # if self.args.split_mode != 'predefine':
+        if split == 'train':
+            dataset = self.train_dataset
+        elif split == 'valid':
+            dataset =self.valid_dataset
+        # else:
+        #     split_path = os.path.join(self.args.data, split + ".lmdb")
+        #     dataset = LMDBDataset(split_path)
+        #     if split == 'train':
+        #         atoms_target = np.concatenate([np.array(dataset[i]['atoms_target']) for i in range(len(dataset))], axis=0) 
+        #         atoms_target_mask = np.concatenate([np.array(dataset[i]['atoms_target_mask']) for i in range(len(dataset))], axis=0) 
+        #         self.target_scaler.fit(target=atoms_target[atoms_target_mask==1].reshape(-1, self.args.num_classes), num_classes=self.args.num_classes, dump_dir=self.args.save_dir)
 
         if self.args.has_matid:
             matid_dataset = KeyDataset(dataset, "matid")
@@ -231,6 +250,7 @@ class UniNMRTask(UnicoreTask):
         filter_list = [0 if torch.all(select_atom_dataset[i]==0) else 1 for i in range(len(select_atom_dataset))]
         
         dataset = FilterDataset(dataset, filter_list)
+        matid_dataset = FilterDataset(matid_dataset, filter_list)
         token_dataset = FilterDataset(token_dataset, filter_list)
         select_atom_dataset = FilterDataset(select_atom_dataset, filter_list)
 
@@ -256,44 +276,83 @@ class UniNMRTask(UnicoreTask):
             distance_dataset = PrependAndAppend2DDataset(distance_dataset, 0.0)
             distance_dataset = RightPadDataset2D(distance_dataset, pad_idx=0)
         coord_dataset = PrependAndAppend(coord_dataset, 0.0, 0.0)
-
         edge_type = EdgeTypeDataset(token_dataset, len(self.dictionary))
 
         tgt_dataset = KeyDataset(dataset, "atoms_target")
+        tgt_dataset = TargetScalerDataset(tgt_dataset, self.target_scaler, self.args.num_classes)
         tgt_dataset = ToTorchDataset(tgt_dataset, dtype='float32')
+
         tgt_dataset = PrependAndAppend(tgt_dataset, self.dictionary.pad(), self.dictionary.pad())
 
-
-        nest_dataset = NestedDictionaryDataset(
-                {
-                    "net_input": {
-                        "select_atom": RightPadDataset(
-                            select_atom_dataset,
-                            pad_idx=self.dictionary.pad(),
-                        ),
-                        "src_tokens": RightPadDataset(
-                            token_dataset,
-                            pad_idx=self.dictionary.pad(),
-                        ),
-                        "src_coord": RightPadDatasetCoord(
-                            coord_dataset,
-                            pad_idx=0,
-                        ),
-                        "src_distance": distance_dataset,
-                        "src_edge_type": RightPadDataset2D(
-                            edge_type,
-                            pad_idx=0,
-                        ),
+        if self.args.atom_descriptor != 0:
+            atomdes_dataset = KeyDataset(dataset, "atoms_descriptor")
+            atomdes_dataset = ToTorchDataset(atomdes_dataset, dtype='float32')
+            atomdes_dataset = PrependAndAppend(atomdes_dataset, self.dictionary.pad(), self.dictionary.pad())
+            nest_dataset = NestedDictionaryDataset(
+                    {
+                        "net_input": {
+                            "select_atom": RightPadDataset(
+                                select_atom_dataset,
+                                pad_idx=self.dictionary.pad(),
+                            ),
+                            "src_tokens": RightPadDataset(
+                                token_dataset,
+                                pad_idx=self.dictionary.pad(),
+                            ),
+                            "src_coord": RightPadDataset2D0(
+                                coord_dataset,
+                                pad_idx=0,
+                            ),
+                            "src_distance": distance_dataset,
+                            "src_edge_type": RightPadDataset2D(
+                                edge_type,
+                                pad_idx=0,
+                            ),
+                            "atom_descriptor": RightPadDataset2D0(
+                                atomdes_dataset,
+                                pad_idx=0,
+                            ),
+                        },
+                        "target": {
+                            "finetune_target": RightPadDataset(
+                                tgt_dataset,
+                                pad_idx=0,
+                            ),
+                        },
+                        "matid": matid_dataset,
                     },
-                    "target": {
-                        "finetune_target": RightPadDataset(
-                            tgt_dataset,
-                            pad_idx=0,
-                        ),
+                )
+        else:
+            nest_dataset = NestedDictionaryDataset(
+                    {
+                        "net_input": {
+                            "select_atom": RightPadDataset(
+                                select_atom_dataset,
+                                pad_idx=self.dictionary.pad(),
+                            ),
+                            "src_tokens": RightPadDataset(
+                                token_dataset,
+                                pad_idx=self.dictionary.pad(),
+                            ),
+                            "src_coord": RightPadDataset2D0(
+                                coord_dataset,
+                                pad_idx=0,
+                            ),
+                            "src_distance": distance_dataset,
+                            "src_edge_type": RightPadDataset2D(
+                                edge_type,
+                                pad_idx=0,
+                            ),
+                        },
+                        "target": {
+                            "finetune_target": RightPadDataset(
+                                tgt_dataset,
+                                pad_idx=0,
+                            ),
+                        },
+                        "matid": matid_dataset,
                     },
-                    "matid": matid_dataset,
-                },
-            )
+                )
         if split in ["train", "train.small"]:
             nest_dataset = EpochShuffleDataset(nest_dataset, len(nest_dataset), self.args.seed)
         self.datasets[split] = nest_dataset
@@ -304,5 +363,6 @@ class UniNMRTask(UnicoreTask):
         model.register_node_classification_head(
             self.args.classification_head_name,
             num_classes=self.args.num_classes,
+            extra_dim=self.args.atom_descriptor,
         )
         return model

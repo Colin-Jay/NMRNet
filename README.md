@@ -1,104 +1,66 @@
-Official Repository for the Uni-Mol Series Methods
+NMRNet
 ==================================================
 
-Shortcuts
----------
+This is the official implementation of the code related to the paper "Towards a Unified Benchmark and Framework for Deep Learning-Based Prediction of Nuclear Magnetic Resonance Chemical Shifts".
 
-- [Uni-Mol](./unimol/)
-- [Uni-Mol+](./unimol_plus/)
-- [Uni-Mol Tools](./unimol_tools/)
+Authors: Fanjie Xu, Wentao Guo, Feng Wang, Lin Yao, Hongshuai Wang, Fujie Tang\*, Zhifeng Gao\*, Linfeng Zhang, Weinan E, Zhong-Qun Tian, Jun Cheng\* (\* are corresponding authors).
 
+Our pre-training weights and datasets for all fine-tuning stages can be downloaded on [zenodo](<https://doi.org/10.5281/zenodo.13317524>). The online web app can be used  [NMR chemical shift prediction](https://bohrium.dp.tech/apps/nmrnet001).
 
-**Note**: if you want to install or run our codes, please `cd` to subfolders first.
+![NMRNet framework](./figure/framework.jpg)
 
+Four modules of the NMRNet framework:
 
-Uni-Mol: A Universal 3D Molecular Representation Learning Framework
--------------------------------------------------------------------
-
-[[Paper](https://openreview.net/forum?id=6K2RM6wVqKu)], [[Uni-Mol Docking Colab](https://colab.research.google.com/github/dptech-corp/Uni-Mol/blob/main/unimol/notebooks/unimol_binding_pose_demo.ipynb)]
-
-Authors: Gengmo Zhou, Zhifeng Gao, Qiankun Ding, Hang Zheng, Hongteng Xu, Zhewei Wei, Linfeng Zhang, Guolin Ke 
-
-<p align="center"><img src="unimol/figure/overview.png" width=60%></p>
-<p align="center"><b>Schematic illustration of the Uni-Mol framework</b></p>
-
-Uni-Mol is a universal 3D molecular pretraining framework that offers a significant expansion of representation capacity and application scope in drug design. The framework comprises two models: a molecular pretraining model that has been trained using 209M molecular 3D conformations, 
-and a pocket pretraining model that has been trained using 3M candidate protein pocket data. These two models can be used independently for different tasks and are combined for protein-ligand binding tasks. Uni-Mol has demonstrated superior performance compared to the state-of-the-art (SOTA) in 14 out of 15 molecular property prediction tasks. Moreover, Uni-Mol has achieved exceptional accuracy in 3D spatial tasks, such as protein-ligand binding pose prediction and molecular conformation generation.
-
-Check this [subfolder](./unimol/) for more detalis.
+- Data preparation, providing structure and NMR data. 
+- Pre-training, using pure structural information for self-supervised tasks, including masked atom prediction and 3D position recovery. 
+- Fine-tuning, for supervised NMR chemical shift prediction. 
+- Inference, where the fine-tuned NMRNet model parameters are frozen and applied to various tasks.
 
 
-Highly Accurate Quantum Chemical Property Prediction with Uni-Mol+
--------------------------------------------------------------------
-[![arXiv](https://img.shields.io/badge/arXiv-2303.16982-00ff00.svg)](https://arxiv.org/abs/2303.16982) [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/highly-accurate-quantum-chemical-property/graph-regression-on-pcqm4mv2-lsc)](https://paperswithcode.com/sota/graph-regression-on-pcqm4mv2-lsc?p=highly-accurate-quantum-chemical-property) [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/highly-accurate-quantum-chemical-property/initial-structure-to-relaxed-energy-is2re)](https://paperswithcode.com/sota/initial-structure-to-relaxed-energy-is2re?p=highly-accurate-quantum-chemical-property)
 
-<p align="center"><img src="unimol_plus/figure/overview.png" width=80%></p>
-<p align="center"><b>Schematic illustration of the Uni-Mol+ framework</b></p>
-
-Uni-Mol+ is a model for quantum chemical property prediction. Firstly, given a 2D molecular graph, Uni-Mol+ generates an initial 3D conformation from inexpensive methods such as RDKit. Then, the initial conformation is iteratively optimized to its equilibrium conformation, and the optimized conformation is further used to predict the QC properties. In the PCQM4MV2 and OC20 bencmarks, Uni-Mol+ outperforms previous SOTA methods by a large margin.
-
-Check this [subfolder](./unimol_plus/) for more detalis.
-
-Uni-Mol tools for property prediction, representation and downstreams
---------------------------------------------------------------------
-Uni-Mol tools is a easy-use wrappers for property prediction,representation and downstreams with Uni-Mol. It includes the following tools:
-* molecular property prediction with Uni-Mol.
-* molecular representation with Uni-Mol.
-* other downstreams with Uni-Mol.
-
-Check this [subfolder](./unimol_tools/) for more detalis.
-
-News
+Installation
 ----
-**Jul 7 2023**: We update a new version of Uni-Mol+, including the model setting for OC20 and a better performance on PCQM4MV2. 
 
-**Jun 9 2023**: We release Uni-Mol tools for property prediction, representation and downstreams.
+The installation steps for Linux systems are as follows:
 
-**Mar 16 2023**: We release Uni-Mol+, a model for quantum chemical property prediction.
+```
+pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
+pip install scikit-learn==1.3.2
+pip install ase==3.22.1
+pip install ./unicore-0.0.1+cu116torch1.12.0-cp38-cp38-linux_x86_64.whl
+pip install pandas==2.0.3
+```
 
-**Jan 21 2023**: Uni-Mol is accepted by ICLR 2023.
+Detailed installation tutorials for other versions of unicore package can be found at: [Uni-Core](https://github.com/dptech-corp/Uni-Core).
 
-**Oct 12 2022**: Provide a demo to get Uni-Mol molecular representation.
 
-**Sep 20 2022**: Provide Uni-Mol based IFD scoring function baseline for [AIAC 2022 Competition Prediction of protein binding ability of drug molecules](http://www.aiinnovation.com.cn/#/aiaeDetail?id=560). 
 
-**Sep 9 2022**: Provide Uni-Mol binding pose prediction (docking) demo on Colab.
+## Usage
 
-**Sep 8 2022**: 
+First, you need to prepare your dataset for pre-training or fine-tuning in lmdb format and put it in [data](./data) folder (you may refer to the [demo](./demo) as a reference). 
 
-- The code and data for protein-ligand binding pose prediction are released. 
-- Finetuned model weights of molecular conformation generation and protein-ligand binding pose prediction are released. 
-- [Paper update](https://chemrxiv.org/engage/chemrxiv/article-details/6318b529bada388485bc8361).
+Subsequently, please put the pre-trained weights into the [weights](./weights) folder (skip this step if re-training). Our pre-trained weights can be downloaded on [zenodo](<https://doi.org/10.5281/zenodo.13317524>).
 
-**Aug 17 2022**: Pretrained models are released.
+Then, you can pre-train or fine-tune on your dataset. Here are demo scripts for pre-training and fine-tuning, please adjust the paths and hyperparameters according to your needs.
 
-**Jul 10 2022**: Pretraining codes are released.
+**Pre-training in form of cutoff radius **
 
-**Jun 10 2022**: The 3D conformation data used in Uni-Mol is released.
+```
+sh scripts/pretrain_rcut.sh
+```
 
+**Fine-tuning with 5-fold cross-validation**
+
+```
+sh scripts/finetune_cv.sh
+```
+
+Details of the original [Uni-Mol](https://openreview.net/forum?id=6K2RM6wVqKu) can be found in the paper.
 
 Citation
 --------
 
-Please kindly cite our papers if you use the data/code/model.
-```
-@inproceedings{
-  zhou2023unimol,
-  title={Uni-Mol: A Universal 3D Molecular Representation Learning Framework},
-  author={Gengmo Zhou and Zhifeng Gao and Qiankun Ding and Hang Zheng and Hongteng Xu and Zhewei Wei and Linfeng Zhang and Guolin Ke},
-  booktitle={The Eleventh International Conference on Learning Representations },
-  year={2023},
-  url={https://openreview.net/forum?id=6K2RM6wVqKu}
-}
-@misc{lu2023highly,
-      title={Highly Accurate Quantum Chemical Property Prediction with Uni-Mol+}, 
-      author={Shuqi Lu and Zhifeng Gao and Di He and Linfeng Zhang and Guolin Ke},
-      year={2023},
-      eprint={2303.16982},
-      archivePrefix={arXiv},
-      primaryClass={physics.chem-ph}
-}
-```
+Please kindly cite us after publication if you use our data or code.
 
 License
 -------

@@ -71,7 +71,7 @@ class MaskPointsDataset(BaseWrapperDataset):
     
     def __getitem__(self, index: int):
         if self.epoch is None:
-            return self.__getitem_cached__(0, index)  # Use a default value if self.epoch is None
+            return self.__getitem_cached__(1, index)  # Use a default value if self.epoch is None
         else:
             return self.__getitem_cached__(int(self.epoch), index)  # Convert self.epoch to an integer
 

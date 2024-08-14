@@ -130,6 +130,11 @@ class UniMatModel(BaseUnicoreModel):
             help="use gaussian kernel for distance map",
         )
         # parser.add_argument(
+        #     "--atom-descriptor",
+        #     action="store_true",
+        #     help="use extra atom descriptor",
+        # )  
+        # parser.add_argument(
         #     "--global-distance",
         #     action="store_true",
         #     help="use global distance",
@@ -208,6 +213,7 @@ class UniMatModel(BaseUnicoreModel):
         src_distance,
         src_coord,
         src_edge_type,
+        atom_descriptor=None,
         encoder_masked_tokens=None,
         features_only=False,
         classification_head_name=None,
@@ -263,20 +269,26 @@ class UniMatModel(BaseUnicoreModel):
                     encoder_distance = self.dist_head(encoder_pair_rep)
             if self.args.lattice_loss > 0:
                 lattice = self.lattice_head(encoder_rep[select_atom==1])
-
+        if atom_descriptor is not None:
+            model_input = torch.cat((encoder_rep, atom_descriptor.to(encoder_rep.dtype)), dim=2)
+        else : 
+            model_input = encoder_rep
         if classification_head_name is not None:
-            logits = self.classification_heads[classification_head_name](encoder_rep)
+            if classification_head_name in self.classification_heads:
+                logits = self.classification_heads[classification_head_name](model_input)
+            elif classification_head_name in self.node_classification_heads:
+                logits = self.node_classification_heads[classification_head_name](model_input[select_atom==1])
         elif features_only and (self.classification_heads or self.node_classification_heads):
             logits = {}
             for name, head in self.node_classification_heads.items():
-                logits[name] = head(encoder_rep)
+                logits[name] = head(model_input[select_atom==1])
             for name, head in self.classification_heads.items():
-                logits[name] = head(encoder_rep)
+                logits[name] = head(model_input)
 
         return logits, encoder_distance, encoder_coord, lattice, x_norm, delta_encoder_pair_rep_norm
 
     def register_classification_head(
-        self, name, num_classes=None, inner_dim=None, **kwargs
+        self, name, num_classes=None, inner_dim=None, extra_dim=0, **kwargs
     ):
         """Register a classification head."""
         if name in self.classification_heads:
@@ -289,21 +301,22 @@ class UniMatModel(BaseUnicoreModel):
                         name, num_classes, prev_num_classes, inner_dim, prev_inner_dim
                     )
                 )
+        input_dim=self.args.encoder_embed_dim + extra_dim
         self.classification_heads[name] = ClassificationHead(
-            input_dim=self.args.encoder_embed_dim,
-            inner_dim=inner_dim or self.args.encoder_embed_dim,
+            input_dim=input_dim,
+            inner_dim=inner_dim or input_dim,
             num_classes=num_classes,
             activation_fn=self.args.pooler_activation_fn,
             pooler_dropout=self.args.pooler_dropout,
         )
 
     def register_node_classification_head(
-        self, name, num_classes=None, inner_dim=None, **kwargs
+        self, name, num_classes=None, inner_dim=None, extra_dim=0, **kwargs
     ):
         """Register a classification head."""
-        if name in self.classification_heads:
-            prev_num_classes = self.classification_heads[name].out_proj.out_features
-            prev_inner_dim = self.classification_heads[name].dense.out_features
+        if name in self.node_classification_heads:
+            prev_num_classes = self.node_classification_heads[name].out_proj.out_features
+            prev_inner_dim = self.node_classification_heads[name].dense.out_features
             if num_classes != prev_num_classes or inner_dim != prev_inner_dim:
                 logger.warning(
                     're-registering head "{}" with num_classes {} (prev: {}) '
@@ -311,9 +324,10 @@ class UniMatModel(BaseUnicoreModel):
                         name, num_classes, prev_num_classes, inner_dim, prev_inner_dim
                     )
                 )
-        self.classification_heads[name] = NodeClassificationHead(
-            input_dim=self.args.encoder_embed_dim,
-            inner_dim=inner_dim or self.args.encoder_embed_dim,
+        input_dim=self.args.encoder_embed_dim + extra_dim
+        self.node_classification_heads[name] = NodeClassificationHead(
+            input_dim=input_dim,
+            inner_dim=inner_dim or input_dim,
             num_classes=num_classes,
             activation_fn=self.args.pooler_activation_fn,
             pooler_dropout=self.args.pooler_dropout,

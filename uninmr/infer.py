@@ -61,6 +61,20 @@ def main(args):
     loss = task.build_loss(args)
     loss.eval()
 
+    logger.info(model)
+    logger.info("task: {}".format(task.__class__.__name__))
+    logger.info("model: {}".format(model.__class__.__name__))
+    logger.info("loss: {}".format(loss.__class__.__name__))
+    logger.info(
+        "num. model params: {:,} (num. trained: {:,})".format(
+            sum(getattr(p, "_orig_size", p).numel() for p in model.parameters()),
+            sum(
+                getattr(p, "_orig_size", p).numel()
+                for p in model.parameters()
+                if p.requires_grad
+            ),
+        )
+    )
     for subset in args.valid_subset.split(","):
         try:
             task.load_dataset(subset, combine=False, epoch=1)

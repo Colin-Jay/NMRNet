@@ -3,6 +3,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch
+import numpy as np
 from functools import lru_cache
 from unicore.data import BaseWrapperDataset
 
@@ -12,7 +13,7 @@ class SelectTokenDataset(BaseWrapperDataset):
         self,
         token_dataset,
         token_mask_dataset=None,
-        selected_token=['All'],
+        selected_token=np.array([-1]),
         random_choice=0,
     ):
         self.dataset = token_dataset
@@ -23,8 +24,7 @@ class SelectTokenDataset(BaseWrapperDataset):
     @lru_cache(maxsize=16)
     def __getitem__(self, index: int):
         token = self.dataset[index]
-
-        if 'All' in self.selected_token:
+        if self.selected_token == np.array([-1]):
             ret = torch.ones_like(token)
         else:
             ret = torch.zeros_like(token)

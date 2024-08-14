@@ -27,3 +27,13 @@ class NormalizeDataset(BaseWrapperDataset):
 
     def __getitem__(self, index: int):
         return self.__cached_item__(index, self.epoch)
+
+class TargetScalerDataset(BaseWrapperDataset):
+    def __init__(self, dataset, target_scaler, num_classes):
+        self.dataset = dataset
+        self.target_scaler = target_scaler
+        self.num_classes = num_classes
+
+    def __getitem__(self, index: int):
+        return self.target_scaler.transform(self.dataset[index].reshape(-1, self.num_classes)).reshape(-1)
+

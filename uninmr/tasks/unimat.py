@@ -28,7 +28,7 @@ from uninmr.data import (
     RightPadDataset3D,
     PrependAndAppend2DDataset,
     PrependAndAppend3DDataset,
-    RightPadDatasetCoord,
+    RightPadDataset2D0,
     LatticeNormalizeDataset,
     LatticeMatrixNormalizeDataset,
     RemoveHydrogenDataset,
@@ -229,7 +229,7 @@ class UniMatTask(UnicoreTask):
                     src_dataset,
                     pad_idx=self.dictionary.pad(),
                 ),
-                "src_coord": RightPadDatasetCoord(
+                "src_coord": RightPadDataset2D0(
                     encoder_coord_dataset,
                     pad_idx=0,
                 ),
@@ -242,7 +242,7 @@ class UniMatTask(UnicoreTask):
         target = {
             "tokens_target": RightPadDataset(tgt_dataset, pad_idx=self.dictionary.pad()),
             "distance_target": distance_dataset,
-            "coord_target": RightPadDatasetCoord(coord_dataset, pad_idx=0),
+            "coord_target": RightPadDataset2D0(coord_dataset, pad_idx=0),
             "lattice_target": lattice_dataset,
             }
         dataset = {"net_input": net_input, "target": target}

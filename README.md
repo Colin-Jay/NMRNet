@@ -43,7 +43,7 @@ Subsequently, please put the pre-trained weights into the [weights](./weights) f
 
 Then, you can pre-train or fine-tune on your dataset. Here are demo scripts for pre-training and fine-tuning, please adjust the paths and hyperparameters according to your needs.
 
-**Pre-training in form of cutoff radius **
+**Pre-training in form of cutoff radius**
 
 ```
 sh scripts/pretrain_rcut.sh

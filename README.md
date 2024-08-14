@@ -65,4 +65,4 @@ Please kindly cite us after publication if you use our data or code.
 License
 -------
 
-This project is licensed under the terms of the MIT license. See [LICENSE](https://github.com/dptech-corp/Uni-Mol/blob/main/LICENSE) for additional details.
+This project is licensed under the terms of the MIT license. See [LICENSE](./LICENSE) for additional details.

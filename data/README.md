@@ -1,1 +1,0 @@
-Please put the data set in LMDB format here.

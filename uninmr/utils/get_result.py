@@ -19,7 +19,7 @@ def get_result(filename):
     for item in data:
         predict.extend(item['predict'].reshape(-1).tolist())
         target.extend(item['target'].reshape(-1).tolist())
-
+        # print(item.keys())
         src_token = item["src_token"][item["select_atom"]==1]
         src_token = src_token.detach().cpu().numpy().tolist()
         src_tokens.extend(src_token)

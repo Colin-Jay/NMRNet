@@ -39,20 +39,20 @@ Detailed installation tutorials for other versions of unicore package can be fou
 
 First, you need to prepare your dataset for pre-training or fine-tuning in lmdb format and put it in [data](./data) folder (you may refer to the [demo](./demo) as a reference). 
 
-Subsequently, please put the pre-trained weights into the [weights](./weights) folder (skip this step if re-training). Our pre-trained weights can be downloaded on [zenodo](<https://doi.org/10.5281/zenodo.13317524>).
+Subsequently, please put the pre-trained weights into the [weights](./weight) folder (skip this step if re-training). Our pre-trained weights can be downloaded on [zenodo](<https://doi.org/10.5281/zenodo.13317524>).
 
 Then, you can pre-train or fine-tune on your dataset. Here are demo scripts for pre-training and fine-tuning, please adjust the paths and hyperparameters according to your needs.
 
 **Pre-training in form of cutoff radius**
 
 ```
-sh scripts/pretrain_rcut.sh
+sh script/pretrain_rcut.sh
 ```
 
 **Fine-tuning with 5-fold cross-validation**
 
 ```
-sh scripts/finetune_cv.sh
+sh script/finetune_cv.sh
 ```
 
 Details of the original [Uni-Mol](https://openreview.net/forum?id=6K2RM6wVqKu) can be found in the paper.

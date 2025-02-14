@@ -57,6 +57,10 @@ sh script/finetune_cv.sh
 
 Details of the original [Uni-Mol](https://openreview.net/forum?id=6K2RM6wVqKu) can be found in the paper.
 
+**Inference**
+
+A demo notebook can be found in the [notebook](./demo/notebook) folder.
+
 Citation
 --------
 

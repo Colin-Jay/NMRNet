@@ -7,7 +7,7 @@ Authors: Fanjie Xu, Wentao Guo, Feng Wang, Lin Yao, Hongshuai Wang, Fujie Tang\*
 
 Our pre-training weights and datasets for all fine-tuning stages can be downloaded on [zenodo](<https://doi.org/10.5281/zenodo.13317524>). The online web app can be used  [NMR chemical shift prediction](https://bohrium.dp.tech/apps/nmrnet001).
 
-![NMRNet framework](./figure/framework.tif)
+![NMRNet framework](./figure/framework.jpg)
 
 Four modules of the NMRNet framework:
 

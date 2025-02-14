@@ -164,20 +164,47 @@ class UniNMRTask(UnicoreTask):
         if self.args.split_mode =='predefine':
             train_path = os.path.join(self.args.data, "train" + ".lmdb")
             self.train_dataset = LMDBDataset(train_path)
+            token_dataset = KeyDataset(self.train_dataset, "atoms")
+            token_dataset = TokenizeDataset(token_dataset, self.dictionary, max_seq_len=self.args.max_seq_len)
+            atoms_target_mask_dataset = KeyDataset(self.train_dataset, "atoms_target_mask")
+            select_atom_dataset = SelectTokenDataset(token_dataset=token_dataset, token_mask_dataset=atoms_target_mask_dataset, selected_token=self.selected_token)
+            filter_list = [0 if torch.all(select_atom_dataset[i]==0) else 1 for i in range(len(select_atom_dataset))]
+            self.train_dataset = FilterDataset(self.train_dataset, filter_list)
+
             valid_path = os.path.join(self.args.data, "valid" + ".lmdb")
             self.valid_dataset = LMDBDataset(valid_path)
+            token_dataset = KeyDataset(self.valid_dataset, "atoms")
+            token_dataset = TokenizeDataset(token_dataset, self.dictionary, max_seq_len=self.args.max_seq_len)
+            atoms_target_mask_dataset = KeyDataset(self.valid_dataset, "atoms_target_mask")
+            select_atom_dataset = SelectTokenDataset(token_dataset=token_dataset, token_mask_dataset=atoms_target_mask_dataset, selected_token=self.selected_token)
+            filter_list = [0 if torch.all(select_atom_dataset[i]==0) else 1 for i in range(len(select_atom_dataset))]
+            self.valid_dataset = FilterDataset(self.valid_dataset, filter_list)
+
             atoms_target = np.concatenate([np.array(self.train_dataset[i]['atoms_target']) for i in range(len(self.train_dataset))], axis=0) 
             atoms_target_mask = np.concatenate([np.array(self.train_dataset[i]['atoms_target_mask']) for i in range(len(self.train_dataset))], axis=0) 
             self.target_scaler.fit(target=atoms_target[atoms_target_mask==1].reshape(-1, self.args.num_classes), num_classes=self.args.num_classes, dump_dir=self.args.save_dir)
         elif self.args.split_mode == 'infer':
             valid_path = os.path.join(self.args.data, "valid" + ".lmdb")
             self.valid_dataset = LMDBDataset(valid_path)
+            token_dataset = KeyDataset(self.valid_dataset, "atoms")
+            token_dataset = TokenizeDataset(token_dataset, self.dictionary, max_seq_len=self.args.max_seq_len)
+            atoms_target_mask_dataset = KeyDataset(self.valid_dataset, "atoms_target_mask")
+            select_atom_dataset = SelectTokenDataset(token_dataset=token_dataset, token_mask_dataset=atoms_target_mask_dataset, selected_token=self.selected_token)
+            filter_list = [0 if torch.all(select_atom_dataset[i]==0) else 1 for i in range(len(select_atom_dataset))]
+            self.valid_dataset = FilterDataset(self.valid_dataset, filter_list)
         else:
             self.__init_data()
 
     def __init_data(self):
         data_path = os.path.join(self.args.data, 'train.lmdb')
         raw_dataset = LMDBDataset(data_path)
+        token_dataset = KeyDataset(raw_dataset, "atoms")
+        token_dataset = TokenizeDataset(token_dataset, self.dictionary, max_seq_len=self.args.max_seq_len)
+        atoms_target_mask_dataset = KeyDataset(raw_dataset, "atoms_target_mask")
+        select_atom_dataset = SelectTokenDataset(token_dataset=token_dataset, token_mask_dataset=atoms_target_mask_dataset, selected_token=self.selected_token)
+        filter_list = [0 if torch.all(select_atom_dataset[i]==0) else 1 for i in range(len(select_atom_dataset))]
+        raw_dataset = FilterDataset(raw_dataset, filter_list)
+
         atoms_target = np.concatenate([np.array(raw_dataset[i]['atoms_target']) for i in range(len(raw_dataset))], axis=0) 
         atoms_target_mask = np.concatenate([np.array(raw_dataset[i]['atoms_target_mask']) for i in range(len(raw_dataset))], axis=0) 
 
@@ -247,12 +274,12 @@ class UniNMRTask(UnicoreTask):
         token_dataset = TokenizeDataset(token_dataset, self.dictionary, max_seq_len=self.args.max_seq_len)
         atoms_target_mask_dataset = KeyDataset(dataset, "atoms_target_mask")
         select_atom_dataset = SelectTokenDataset(token_dataset=token_dataset, token_mask_dataset=atoms_target_mask_dataset, selected_token=self.selected_token)
-        filter_list = [0 if torch.all(select_atom_dataset[i]==0) else 1 for i in range(len(select_atom_dataset))]
+        # filter_list = [0 if torch.all(select_atom_dataset[i]==0) else 1 for i in range(len(select_atom_dataset))]
         
-        dataset = FilterDataset(dataset, filter_list)
-        matid_dataset = FilterDataset(matid_dataset, filter_list)
-        token_dataset = FilterDataset(token_dataset, filter_list)
-        select_atom_dataset = FilterDataset(select_atom_dataset, filter_list)
+        # dataset = FilterDataset(dataset, filter_list)
+        # matid_dataset = FilterDataset(matid_dataset, filter_list)
+        # token_dataset = FilterDataset(token_dataset, filter_list)
+        # select_atom_dataset = FilterDataset(select_atom_dataset, filter_list)
 
         coord_dataset = KeyDataset(dataset, "coordinates")
 

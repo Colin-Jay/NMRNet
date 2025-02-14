@@ -1,1 +1,1 @@
-Please put the pre-trained weights here.
+Please put the pre-trained or fine-tuned weights here.

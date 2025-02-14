@@ -11,7 +11,7 @@ app/*
 data/*
 !data/README.md
 test.ipynb
-NMRNet.ipynb
+# NMRNet.ipynb
 rebuttal1.2.ipynb
 rebuttal1.3.ipynb
 rebuttal1.4.ipynb

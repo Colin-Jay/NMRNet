@@ -1,7 +1,7 @@
 NMRNet
 ==================================================
 
-This is the official implementation of the code related to the paper "Towards a Unified Benchmark and Framework for Deep Learning-Based Prediction of Nuclear Magnetic Resonance Chemical Shifts".
+This is the official implementation of the code related to the paper "Toward a Unified Benchmark and Framework for Deep Learning-Based Prediction of Nuclear Magnetic Resonance Chemical Shifts".
 
 Authors: Fanjie Xu, Wentao Guo, Feng Wang, Lin Yao, Hongshuai Wang, Fujie Tang\*, Zhifeng Gao\*, Linfeng Zhang, Weinan E, Zhong-Qun Tian, Jun Cheng\* (\* are corresponding authors).
 
@@ -61,10 +61,12 @@ Details of the original [Uni-Mol](https://openreview.net/forum?id=6K2RM6wVqKu) c
 
 A demo notebook can be found in the [notebook](./demo/notebook) folder.
 
+An online service is available at [ai4ec](https://ai4ec.ac.cn/apps/nmrnet) and [bohrium](https://bohrium.dp.tech/apps/nmrnet001).
+
 Citation
 --------
 
-Please kindly cite us after publication if you use our data or code.
+> Xu, F., Guo, W., Wang, F. et al. Toward a unified benchmark and framework for deep learning-based prediction of nuclear magnetic resonance chemical shifts. Nat Comput Sci 5, 292–300 (2025). https://doi.org/10.1038/s43588-025-00783-z
 
 License
 -------

@@ -1,29 +1,56 @@
-NMRNet
-==================================================
+<div align="center">
 
-This is the official implementation of the code related to the paper "Toward a Unified Benchmark and Framework for Deep Learning-Based Prediction of Nuclear Magnetic Resonance Chemical Shifts".
+# NMRNet: toward a unified benchmark and framework for deep learning-based prediction of nuclear magnetic resonance chemical shifts
 
-Authors: Fanjie Xu, Wentao Guo, Feng Wang, Lin Yao, Hongshuai Wang, Fujie Tang\*, Zhifeng Gao\*, Linfeng Zhang, Weinan E, Zhong-Qun Tian, Jun Cheng\* (\* are corresponding authors).
+Fanjie Xu, Wentao Guo, Feng Wang, Lin Yao, Hongshuai Wang, Fujie Tang*, Zhifeng Gao*, Linfeng Zhang, Weinan E, Zhong-Qun Tian, Jun Cheng* (* indicates corresponding authors)
 
-Our pre-training weights and datasets for all fine-tuning stages can be downloaded on [zenodo](<https://doi.org/10.5281/zenodo.13317524>). The online web app can be used  [NMR chemical shift prediction](https://ai4ec.ac.cn/apps/nmrnet).
+[![Paper](https://img.shields.io/badge/Nat%20Comput%20Sci-2025-4A90D9?style=flat-square)](https://doi.org/10.1038/s43588-025-00783-z)
+[![Zenodo](https://img.shields.io/badge/Data%20%26%20Weights-Zenodo-024d7c?style=flat-square&logo=zenodo)](https://zenodo.org/records/19142375)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Web App](https://img.shields.io/badge/Web%20App-NMR%20Shift%20Prediction-orange?style=flat-square)](https://ai4ec.ac.cn/apps/nmrnet)
+
+</div>
+
+---
+
+This is the **official implementation** of the code related to the paper *"Toward a unified benchmark and framework for deep learning-based prediction of nuclear magnetic resonance chemical shifts"*.
+
+## 📖 Overview
 
 ![NMRNet framework](./figure/framework.jpg)
 
-Four modules of the NMRNet framework:
+**NMRNet** is a unified deep learning framework for NMR chemical shift prediction. It consists of four synergistic modules:
 
-- Data preparation, providing structure and NMR data. 
-- Pre-training, using pure structural information for self-supervised tasks, including masked atom prediction and 3D position recovery. 
-- Fine-tuning, for supervised NMR chemical shift prediction. 
-- Inference, where the fine-tuned NMRNet model parameters are frozen and applied to various tasks.
+| Module | Description |
+|--------|-------------|
+| **Data Preparation** | Provides structure and NMR data |
+| **Pre-training** | Uses pure structural information for self-supervised tasks, including masked atom prediction and 3D position recovery |
+| **Fine-tuning** | Supervised NMR chemical shift prediction |
+| **Inference** | Fine-tuned NMRNet model parameters are frozen and applied to various tasks |
+
+Pre-training weights and datasets for all fine-tuning stages are available on [Zenodo](https://zenodo.org/records/19142375). An online web app is available for [NMR chemical shift prediction](https://ai4ec.ac.cn/apps/nmrnet).
+
+---
 
 
+## 🗞️ News
 
-Installation
-----
+| Date | Update |
+|------|--------|
+| 🟢 **2026.03.21** | The fine-tuned weights have been updated and released on [Zenodo](https://zenodo.org/records/19142375) |
+| 📄 **2025.03.28** | 🎉🎉🎉 Paper published on [Nature Computational Science](https://doi.org/10.1038/s43588-025-00783-z) |
+| 🔗 **2025.03.13** | The web application is available on the [AI4EC platform](https://ai4ec.ac.cn/apps/nmrnet) |
+| 🟢 **2024.12.05** | The LMDB-format datasets have been updated and released on [Zenodo](https://zenodo.org/records/14279498) |
+| 📄 **2024.08.28** | Paper published on [arXiv](https://arxiv.org/abs/2408.15681) |
+| 🟢 **2024.08.14** | Dataset and trained weights released on [Zenodo](https://zenodo.org/records/13317524) |
+| 🟢 **2024.08.14** | Code has been released on [GitHub](https://github.com/Colin-Jay/NMRNet) |
+---
+
+## ⚙️ Installation
 
 The installation steps for Linux systems are as follows:
 
-```
+```bash
 pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
 pip install scikit-learn==1.3.2
 pip install ase==3.22.1
@@ -31,44 +58,78 @@ pip install ./unicore-0.0.1+cu116torch1.12.0-cp38-cp38-linux_x86_64.whl
 pip install pandas==2.0.3
 ```
 
-Detailed installation tutorials for other versions of unicore package can be found at: [Uni-Core](https://github.com/dptech-corp/Uni-Core).
+Detailed installation tutorials for other versions of the unicore package can be found at: [Uni-Core](https://github.com/dptech-corp/Uni-Core).
 
+---
 
+## 🚀 Usage
 
-## Usage
+### 1. Prepare your dataset
 
-First, you need to prepare your dataset for pre-training or fine-tuning in lmdb format and put it in [data](./data) folder (you may refer to the [demo](./demo) as a reference). 
+Prepare your dataset for pre-training or fine-tuning in lmdb format and place it in the [data](./data) folder. You may refer to the [demo](./demo) as a reference.
 
-Subsequently, please put the pre-trained weights into the [weights](./weight) folder (skip this step if re-training). Our pre-trained weights can be downloaded on [zenodo](<https://doi.org/10.5281/zenodo.13317524>).
+### 2. Download pre-trained weights
 
-Then, you can pre-train or fine-tune on your dataset. Here are demo scripts for pre-training and fine-tuning, please adjust the paths and hyperparameters according to your needs.
+Place the pre-trained weights into the [weights](./weight) folder (skip this step if re-training from scratch). Pre-trained weights are available on [Zenodo](https://zenodo.org/records/19142375).
 
-**Pre-training in form of cutoff radius**
+### 3. Run training or inference
 
-```
+#### Pre-training (cutoff radius)
+
+```bash
 sh script/pretrain_rcut.sh
 ```
 
-**Fine-tuning with 5-fold cross-validation**
+#### Fine-tuning (5-fold cross-validation)
 
-```
+```bash
 sh script/finetune_cv.sh
 ```
 
-Details of the original [Uni-Mol](https://openreview.net/forum?id=6K2RM6wVqKu) can be found in the paper.
+Details of the original [Uni-Mol](https://openreview.net/forum?id=6K2RM6wVqKu) architecture can be found in the paper.
 
-**Inference**
+#### Inference
 
-A demo notebook can be found in the [notebook](./demo/notebook) folder.
+A demo notebook is available in the [notebook](./demo/notebook) folder.
 
-An online service is available at [ai4ec](https://ai4ec.ac.cn/apps/nmrnet) and [bohrium](https://bohrium.dp.tech/apps/nmrnet001).
+An online service is also available at [ai4ec](https://ai4ec.ac.cn/apps/nmrnet) and [bohrium](https://bohrium.dp.tech/apps/nmrnet001).
 
-Citation
---------
+---
 
-> Xu, F., Guo, W., Wang, F. et al. Toward a unified benchmark and framework for deep learning-based prediction of nuclear magnetic resonance chemical shifts. Nat Comput Sci 5, 292–300 (2025). https://doi.org/10.1038/s43588-025-00783-z
+## 📜 Citation
 
-License
--------
+If you find NMRNet useful in your research, please cite:
 
-This project is licensed under the terms of the MIT license. See [LICENSE](./LICENSE) for additional details.
+```bibtex
+@article{xu2025toward,
+  title={Toward a unified benchmark and framework for deep learning-based prediction of nuclear magnetic resonance chemical shifts},
+  author={Xu, Fanjie and Guo, Wentao and Wang, Feng and Yao, Lin and Wang, Hongshuai and Tang, Fujie and Gao, Zhifeng and Zhang, Linfeng and E, Weinan and Tian, Zhong-Qun and others},
+  journal={Nature Computational Science},
+  volume={5},
+  number={4},
+  pages={292--300},
+  year={2025},
+  publisher={Nature Publishing Group US New York}
+}
+```
+
+---
+
+## ⚠️ License
+
+This project is licensed under the terms of the **MIT License**. See [LICENSE](./LICENSE) for additional details.
+
+---
+
+## 📬 Contact
+
+For questions and issues, please contact the author [xufanjie@stu.xmu.edu.cn](mailto:xufanjie@stu.xmu.edu.cn) or open a GitHub issue.
+
+
+---
+
+<div align="center">
+<sub>
+State Key Laboratory of Physical Chemistry of Solid Surfaces · Xiamen University
+</sub>
+</div>

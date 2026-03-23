@@ -7,7 +7,7 @@ Fanjie Xu, Wentao Guo, Feng Wang, Lin Yao, Hongshuai Wang, Fujie Tang*, Zhifeng 
 [![Paper](https://img.shields.io/badge/Nat%20Comput%20Sci-2025-4A90D9?style=flat-square)](https://doi.org/10.1038/s43588-025-00783-z)
 [![Zenodo](https://img.shields.io/badge/Data%20%26%20Weights-Zenodo-024d7c?style=flat-square&logo=zenodo)](https://zenodo.org/records/19142375)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Web App](https://img.shields.io/badge/Web%20App-NMR%20Shift%20Prediction-orange?style=flat-square)](https://ai4ec.ac.cn/apps/nmrnet)
+[![Web App](https://img.shields.io/badge/Web%20App-NMRNet-orange?style=flat-square)](https://ai4ec.ac.cn/apps/nmrnet)
 
 </div>
 

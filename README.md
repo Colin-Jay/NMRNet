@@ -40,13 +40,13 @@ Pre-training weights and datasets for all fine-tuning stages are available on [Z
 
 | Date | Update |
 |------|--------|
-| 🟢 **2026.03.21** | The fine-tuned weights have been updated and released on [Zenodo](https://zenodo.org/records/19142375) |
+| 🎞️ **2026.03.21** | The fine-tuned weights have been updated and released on [Zenodo](https://zenodo.org/records/19142375) |
 | 📄 **2025.03.28** | 🎉🎉🎉 Paper published on [Nature Computational Science](https://doi.org/10.1038/s43588-025-00783-z) |
 | 🔗 **2025.03.13** | The web application is available on the [AI4EC platform](https://ai4ec.ac.cn/apps/nmrnet) |
-| 🟢 **2024.12.05** | The LMDB-format datasets have been updated and released on [Zenodo](https://zenodo.org/records/14279498) |
+| 🎞️ **2024.12.05** | The LMDB-format datasets have been updated and released on [Zenodo](https://zenodo.org/records/14279498) |
 | 📄 **2024.08.28** | Paper published on [arXiv](https://arxiv.org/abs/2408.15681) |
-| 🟢 **2024.08.14** | Dataset and trained weights released on [Zenodo](https://zenodo.org/records/13317524) |
-| 🟢 **2024.08.14** | Code has been released on [GitHub](https://github.com/Colin-Jay/NMRNet) |
+| 🎞️ **2024.08.14** | Dataset and trained weights released on [Zenodo](https://zenodo.org/records/13317524) |
+| 🏷️ **2024.08.14** | Code has been released on [GitHub](https://github.com/Colin-Jay/NMRNet) |
 ---
 
 ## ⚙️ Installation

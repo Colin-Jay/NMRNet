@@ -11,11 +11,8 @@ app/*
 data/*
 !data/README.md
 test.ipynb
-# NMRNet.ipynb
-rebuttal1.2.ipynb
-rebuttal1.3.ipynb
-rebuttal1.4.ipynb
-rebuttal2.1.ipynb
+*.ipynb
+*.pkl
 test.py
 uninmr/utils/data_preparation/nmrshiftdb2_2024_old.py
 script/finetune_5cv_local.sh

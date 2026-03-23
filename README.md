@@ -35,6 +35,9 @@ Pre-training weights and datasets for all fine-tuning stages are available on [Z
 
 ## 🗞️ News
 
+> ⚠️ **Note**
+> Please note that the Zenodo records may be updated. Make sure to check the latest version.
+
 | Date | Update |
 |------|--------|
 | 🟢 **2026.03.21** | The fine-tuned weights have been updated and released on [Zenodo](https://zenodo.org/records/19142375) |
